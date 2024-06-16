@@ -1,4 +1,4 @@
-import 'package:crypto_pulse/application/ui/screen/home.dart';
+import 'package:crypto_pulse/application/ui/host.dart';
 import 'package:flutter/material.dart';
 
 class Application extends StatelessWidget {
@@ -12,7 +12,7 @@ class Application extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0x006974)),
         useMaterial3: true,
       ),
-      home: Home(),
+      home: const Host(),
     );
   }
 }
