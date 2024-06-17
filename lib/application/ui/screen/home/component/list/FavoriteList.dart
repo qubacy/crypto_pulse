@@ -1,3 +1,4 @@
+import 'package:crypto_pulse/application/ui/screen/home/component/list/FavoriteListItem.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteList extends StatefulWidget {
@@ -15,6 +16,8 @@ class FavoriteList extends StatefulWidget {
 }
 
 class _FavoriteListState extends State<FavoriteList> {
+  static const VISIBLE_ITEM_COUNT = 20;
+
   final GlobalKey? _hintTextKey;
 
   _FavoriteListState({
@@ -24,15 +27,19 @@ class _FavoriteListState extends State<FavoriteList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       padding: widget.margin,
       itemBuilder: (context, index) {
         // todo: implement:
 
-        return index < 3 ? Text("item $index") : null;
+        return index < 3 ? FavoriteListItem(name: 'Crypto', price: '\$54900', ) : null;
       },
+      separatorBuilder: (context, index) {
+        return Divider();
+      },
+      itemCount: VISIBLE_ITEM_COUNT,
     );
   }
 }

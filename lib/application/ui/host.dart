@@ -15,7 +15,7 @@ class _HostState extends State<Host> {
   final List<NavigationDestination> _destinations = const <NavigationDestination>[
     NavigationDestination(
       icon: Icon(Icons.home),
-      label: "Home"
+      label: "Your crypto"
     ),
     NavigationDestination(
       icon: SvgIcon(icon: SvgIconData('assets/images/crypto.svg')),

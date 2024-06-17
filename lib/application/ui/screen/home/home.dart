@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 
 import '../_common/screen.dart';
-import './component/FavoriteList.dart';
+import './component/list/FavoriteList.dart';
 import './component/TopHint.dart';
 
 class Home extends StatelessWidget implements Screen {
@@ -113,8 +113,7 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
         Transform.translate(
           offset: Offset(0, _contentTopShift),
           child: FavoriteList(
-            hintTextKey: _topHintKey, 
-            margin: commonMargin
+            hintTextKey: _topHintKey
           )
         )
       ],
