@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class FavoriteList extends StatefulWidget {
   final GlobalKey? _hintTextKey;
 
-  const FavoriteList({super.key, GlobalKey? hintTextKey}) : _hintTextKey = hintTextKey;
+  final EdgeInsets margin;
+
+  const FavoriteList({
+    super.key, GlobalKey? hintTextKey, 
+    this.margin = const EdgeInsets.all(0)
+  }) : _hintTextKey = hintTextKey;
 
   @override
   State<FavoriteList> createState() => _FavoriteListState(hintTextKey: _hintTextKey);
@@ -12,7 +17,9 @@ class FavoriteList extends StatefulWidget {
 class _FavoriteListState extends State<FavoriteList> {
   final GlobalKey? _hintTextKey;
 
-  _FavoriteListState({GlobalKey? hintTextKey}) : 
+  _FavoriteListState({
+    GlobalKey? hintTextKey 
+  }) : 
     _hintTextKey =  hintTextKey;
 
   @override
@@ -20,7 +27,7 @@ class _FavoriteListState extends State<FavoriteList> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      padding: const EdgeInsets.all(8.0),
+      padding: widget.margin,
       itemBuilder: (context, index) {
         // todo: implement:
 

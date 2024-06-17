@@ -97,15 +97,25 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    EdgeInsets commonMargin = const EdgeInsets.only(left: 16, right: 16);
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SlideTransition(
           position: _offsetAnimation,
-          child: TopHint(key: _topHintKey, hint: "Feel free to swipe out unnecessary items.")
+          child: TopHint(
+            key: _topHintKey,
+            hint: "Feel free to swipe out unnecessary items.",
+            margin: commonMargin.copyWith(top: 8, bottom: 8)
+          )
         ),
         Transform.translate(
           offset: Offset(0, _contentTopShift),
-          child: FavoriteList(hintTextKey: _topHintKey)
+          child: FavoriteList(
+            hintTextKey: _topHintKey, 
+            margin: commonMargin
+          )
         )
       ],
     );
