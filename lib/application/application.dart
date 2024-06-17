@@ -1,4 +1,4 @@
-import 'package:crypto_pulse/application/ui/host.dart';
+import 'package:crypto_pulse/application/ui/Host.dart';
 import 'package:flutter/material.dart';
 
 class Application extends StatelessWidget {

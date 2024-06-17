@@ -1,5 +1,5 @@
-import 'package:crypto_pulse/application/ui/screen/cryptocurrency/cryptocurrencies.dart';
-import 'package:crypto_pulse/application/ui/screen/home/home.dart';
+import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';
+import 'package:crypto_pulse/application/ui/screen/home/Home.dart';
 import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 import 'package:flutter/material.dart';
 import './screen/_common/screen.dart';
