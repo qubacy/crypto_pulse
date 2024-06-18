@@ -46,10 +46,9 @@ class _FavoriteListState extends State<FavoriteList> {
         return Dismissible(
           key: ValueKey<String>(item.name),
           onDismissed: (direction) {
-            setState(() {
-              _items.removeAt(index);
-            });
+            _handleCryptoRemoval(index);
           },
+          dismissThresholds: const { DismissDirection.startToEnd: 0.5 },
           direction: DismissDirection.startToEnd,
           background: Container(color: Colors.red,),
           child: FavoriteListItem(name: item.name, price: item.price,)
@@ -60,5 +59,18 @@ class _FavoriteListState extends State<FavoriteList> {
       },
       itemCount: _items.length,
     );
+  }
+
+
+  void _handleCryptoRemoval(int index) {
+    final cryptocurrencyToRemove = _items[index];
+
+    setState(() {
+      _items.removeAt(index);
+    });
+
+    // todo: implement actual removing here..
+
+
   }
 }
