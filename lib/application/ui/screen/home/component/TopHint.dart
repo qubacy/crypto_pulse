@@ -8,10 +8,12 @@ class TopHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyLarge;
+
     return Container(
       alignment: Alignment.centerLeft,
       padding: margin,
-      child: Text(hint)
+      child: Text(hint, style: textStyle,)
     );
   }
 }

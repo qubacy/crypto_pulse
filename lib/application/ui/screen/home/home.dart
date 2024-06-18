@@ -51,6 +51,7 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
   static const ANIMATION_DURATION = Duration(milliseconds: 400);
 
   final GlobalKey? _topHintKey;
+  final GlobalKey _homeContentKey = GlobalKey();
 
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
@@ -98,23 +99,36 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     EdgeInsets commonMargin = const EdgeInsets.only(left: 16, right: 16);
+    final topHint = TopHint(
+      key: _topHintKey,
+      hint: "Feel free to swipe out unnecessary items.",
+      margin: commonMargin.copyWith(top: 8, bottom: 8)
+    );
 
     return Column(
+      key: _homeContentKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SlideTransition(
           position: _offsetAnimation,
-          child: TopHint(
-            key: _topHintKey,
-            hint: "Feel free to swipe out unnecessary items.",
-            margin: commonMargin.copyWith(top: 8, bottom: 8)
-          )
+          child: topHint
         ),
-        Transform.translate(
-          offset: Offset(0, _contentTopShift),
-          child: FavoriteList(
-            hintTextKey: _topHintKey
-          )
+        Flexible(
+          child: Transform.translate(
+            offset: Offset(0, _contentTopShift),
+            child:  LayoutBuilder(
+              builder: (context, constraints) {
+                final height = constraints.biggest.height + (-_contentTopShift);
+
+                return ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: height, minHeight: height),
+                  child: FavoriteList(
+                    hintTextKey: _topHintKey
+                  )
+                );
+              }
+            )
+          ),
         )
       ],
     );

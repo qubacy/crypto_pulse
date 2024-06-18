@@ -1,14 +1,15 @@
+import 'package:crypto_pulse/application/ui/screen/_common/presentation/Cryptocurrency.dart';
 import 'package:crypto_pulse/application/ui/screen/home/component/list/FavoriteListItem.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteList extends StatefulWidget {
   final GlobalKey? _hintTextKey;
 
-  final EdgeInsets margin;
+  final EdgeInsets padding;
 
   const FavoriteList({
     super.key, GlobalKey? hintTextKey, 
-    this.margin = const EdgeInsets.all(0)
+    this.padding = const EdgeInsets.all(0)
   }) : _hintTextKey = hintTextKey;
 
   @override
@@ -20,6 +21,11 @@ class _FavoriteListState extends State<FavoriteList> {
 
   final GlobalKey? _hintTextKey;
 
+  // todo: to delete:
+  List<Cryptocurrency> _items = List.generate(10, (index) {
+    return Cryptocurrency(name: "Crypto #$index", price: "${index * 1000}");
+  });
+
   _FavoriteListState({
     GlobalKey? hintTextKey 
   }) : 
@@ -30,11 +36,22 @@ class _FavoriteListState extends State<FavoriteList> {
     return ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      padding: widget.margin,
+      padding: widget.padding,
       itemBuilder: (context, index) {
         // todo: implement:
+        if (index >= _items.length) return null;
 
-        return index < 3 ? FavoriteListItem(name: 'Crypto', price: '\$54900', ) : null;
+        final item = _items[index];
+
+        return Dismissible(
+          key: Key(item.name),
+          onDismissed: (direction) {
+            setState(() {
+              _items.removeAt(index);
+            });
+          },
+          child: FavoriteListItem(name: item.name, price: item.price,)
+        );
       },
       separatorBuilder: (context, index) {
         return Divider();
