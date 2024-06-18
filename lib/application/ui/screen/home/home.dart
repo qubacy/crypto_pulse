@@ -53,10 +53,8 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
   final GlobalKey? _topHintKey;
   final GlobalKey _homeContentKey = GlobalKey();
 
-  late AnimationController _animationController;
-  late Animation<Offset> _offsetAnimation;
-
-  double _contentTopShift = 0.0;
+  double? _topHintHeight;
+  double? _curTopHintHeight;
 
   _HomeContentState({GlobalKey? topHintKey}) : _topHintKey = topHintKey;
 
@@ -64,7 +62,6 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
   void initState() {
     super.initState();
 
-    _initAnimation();
     print("initState;");
 
     (widget as HomeContent).lastState = this;
@@ -77,23 +74,6 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
     print("didUpdateWidget;");
 
     (widget as HomeContent).lastState = this;
-  }
-
-  void _initAnimation() {
-    _animationController = AnimationController(vsync: this, duration: ANIMATION_DURATION);
-    _offsetAnimation = Tween(begin: Offset.zero, end: const Offset(0.0, -1.0)).animate(_animationController);
-
-    _animationController.addListener(_onAnimationRunning);
-  }
-
-  void _onAnimationRunning() {
-    double hintTextHeight = (_topHintKey?.currentContext?.findRenderObject()?.semanticBounds.height)!;
-
-    setState(() {
-      _contentTopShift = -(hintTextHeight * _animationController.value);
-
-      print("content top margin: $_contentTopShift");
-    });
   }
 
   @override
@@ -109,38 +89,37 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
       key: _homeContentKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SlideTransition(
-          position: _offsetAnimation,
+        AnimatedContainer(
+          duration: ANIMATION_DURATION,
+          height: _curTopHintHeight,
           child: topHint
         ),
         Flexible(
-          child: Transform.translate(
-            offset: Offset(0, _contentTopShift),
-            child:  LayoutBuilder(
-              builder: (context, constraints) {
-                final height = constraints.biggest.height + (-_contentTopShift);
-
-                return ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: height, minHeight: height),
-                  child: FavoriteList(
-                    hintTextKey: _topHintKey
-                  )
-                );
-              }
-            )
-          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return FavoriteList(
+                hintTextKey: _topHintKey
+              );
+            }
+          )
         )
       ],
     );
   }
 
   void toggleAppearance() {
-    switch (_animationController.status) {
-      case AnimationStatus.completed || AnimationStatus.forward:
-        _animationController.reverse();
-      case AnimationStatus.dismissed || AnimationStatus.reverse:
-        _animationController.forward();
-      default:
-    }
+    _topHintHeight ??= _topHintKey!.currentContext!.size!.height;
+
+    print("toggleAppearance(): _topHintHeight = $_topHintHeight;");
+
+    setState(() {
+        if (_curTopHintHeight == null) {
+          _curTopHintHeight = 0;
+        } else {
+          _curTopHintHeight = _curTopHintHeight == _topHintHeight ? 0 : 40;
+        }
+
+        print("toggleAppearance(): _curTopHintHeight = $_curTopHintHeight;");
+    });
   }
 }

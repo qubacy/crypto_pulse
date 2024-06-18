@@ -44,19 +44,21 @@ class _FavoriteListState extends State<FavoriteList> {
         final item = _items[index];
 
         return Dismissible(
-          key: Key(item.name),
+          key: ValueKey<String>(item.name),
           onDismissed: (direction) {
             setState(() {
               _items.removeAt(index);
             });
           },
+          direction: DismissDirection.startToEnd,
+          background: Container(color: Colors.red,),
           child: FavoriteListItem(name: item.name, price: item.price,)
         );
       },
       separatorBuilder: (context, index) {
         return Divider();
       },
-      itemCount: VISIBLE_ITEM_COUNT,
+      itemCount: _items.length,
     );
   }
 }
