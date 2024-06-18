@@ -1,6 +1,6 @@
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/component/CryptocurrencyListItem.dart';
 import 'package:flutter/material.dart';
-import '../../_common/presentation/Cryptocurrency.dart';
+import '../../../_common/presentation/CryptoPresentation.dart';
 
 class CryptocurrencyList extends StatefulWidget {
   final EdgeInsets padding;
@@ -15,8 +15,8 @@ class CryptocurrencyList extends StatefulWidget {
 
 class _CryptocurrencyListState extends State<CryptocurrencyList> {
   // todo: to delete:
-  List<Cryptocurrency> _items = List.generate(10, (index) {
-    return Cryptocurrency(name: "Crypto #$index", price: "${index * 1000}");
+  List<CryptoPresentation> _items = List.generate(10, (index) {
+    return CryptoPresentation(token: "$index", name: "Crypto #$index", price: "${index * 1000}", isFavorite: false);
   });
 
   _CryptocurrencyListState();
@@ -32,9 +32,8 @@ class _CryptocurrencyListState extends State<CryptocurrencyList> {
         final item = _items[index];
 
         return CryptocurrencyListItem(
-          name: item.name,
-          price: item.price,
-          onAddedToFavorite: _onAddedToFavorite 
+          cryptocurrency: item,
+          onFavoriteToggled: _onFavoriteToggled 
         );
       },
       separatorBuilder: (context, index) {
@@ -44,7 +43,7 @@ class _CryptocurrencyListState extends State<CryptocurrencyList> {
     );
   }
 
-  void _onAddedToFavorite(String name) {
+  void _onFavoriteToggled(String name) {
     // todo: implement..
 
 

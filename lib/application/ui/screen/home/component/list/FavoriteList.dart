@@ -1,6 +1,8 @@
-import 'package:crypto_pulse/application/ui/screen/_common/presentation/Cryptocurrency.dart';
+import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
+import 'package:crypto_pulse/application/ui/model/HostModel.dart';
 import 'package:crypto_pulse/application/ui/screen/home/component/list/FavoriteListItem.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FavoriteList extends StatefulWidget {
   final GlobalKey? _hintTextKey;
@@ -22,9 +24,7 @@ class _FavoriteListState extends State<FavoriteList> {
   final GlobalKey? _hintTextKey;
 
   // todo: to delete:
-  List<Cryptocurrency> _items = List.generate(10, (index) {
-    return Cryptocurrency(name: "Crypto #$index", price: "${index * 1000}");
-  });
+  List<CryptoPresentation> _lastItems = [];
 
   _FavoriteListState({
     GlobalKey? hintTextKey 
@@ -33,38 +33,47 @@ class _FavoriteListState extends State<FavoriteList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: widget.padding,
-      itemBuilder: (context, index) {
-        // todo: implement:
-        final item = _items[index];
+    return Consumer<HostModel>(
+      builder: (context, model, child) {
+        return StreamBuilder(
+          stream: model.getFavoriteCryptoPresentations(),
+          builder: (context, listSnapshot) {
+            _lastItems = listSnapshot.data ?? [];
 
-        return Dismissible(
-          key: ValueKey<String>(item.name),
-          onDismissed: (direction) {
-            _handleCryptoRemoval(index);
-          },
-          dismissThresholds: const { DismissDirection.startToEnd: 0.5 },
-          direction: DismissDirection.startToEnd,
-          background: Container(color: Colors.red,),
-          child: FavoriteListItem(name: item.name, price: item.price,)
+            return ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              padding: widget.padding,
+              itemBuilder: (context, index) {
+                final item = _lastItems[index];
+
+                return Dismissible(
+                  key: ValueKey<String>(item.name),
+                  onDismissed: (direction) {
+                    _handleCryptoRemoval(index);
+                  },
+                  dismissThresholds: const { DismissDirection.startToEnd: 0.5 },
+                  direction: DismissDirection.startToEnd,
+                  background: Container(color: Colors.red,),
+                  child: FavoriteListItem(name: item.name, price: item.price,)
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+              itemCount: _lastItems.length,
+            );
+          }
         );
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
-      itemCount: _items.length,
+      }
     );
   }
 
-
   void _handleCryptoRemoval(int index) {
-    final cryptocurrencyToRemove = _items[index];
+    final cryptocurrencyToRemove = _lastItems[index];
 
     setState(() {
-      _items.removeAt(index);
+      _lastItems.removeAt(index);
     });
 
     // todo: implement actual removing here..

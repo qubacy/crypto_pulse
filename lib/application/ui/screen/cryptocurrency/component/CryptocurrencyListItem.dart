@@ -1,17 +1,14 @@
+import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
 import 'package:flutter/material.dart';
 
 class CryptocurrencyListItem extends StatelessWidget {
-  final String name;
-  final String price;
-  final bool isFavorite;
+  final CryptoPresentation cryptocurrency;
 
   final Function _onFavoriteToggled;
 
   const CryptocurrencyListItem({
     super.key,
-    required this.name, 
-    required this.price, 
-    required this.isFavorite, 
+    required this.cryptocurrency,
     required onFavoriteToggled
   }) : _onFavoriteToggled = onFavoriteToggled;
 
@@ -22,10 +19,10 @@ class CryptocurrencyListItem extends StatelessWidget {
     return ListTile(
       leading: IconButton(
         icon: const Icon(Icons.favorite_border),
-        onPressed: () => _onFavoriteToggled(),
+        onPressed: () => _onFavoriteToggled(cryptocurrency.token),
       ),
-      title: Text(name),
-      trailing: Text(price, style: textTheme.bodyLarge,),
+      title: Text(cryptocurrency.name),
+      trailing: Text(cryptocurrency.price, style: textTheme.bodyLarge,),
     );
   }
 }

@@ -1,7 +1,9 @@
+import 'package:crypto_pulse/application/ui/model/HostModel.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';
 import 'package:crypto_pulse/application/ui/screen/home/Home.dart';
 import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './screen/_common/screen.dart';
 
 class Host extends StatefulWidget {
@@ -29,21 +31,24 @@ class _HostState extends State<Host> {
   Widget build(BuildContext context) {
     Widget currentScreen = _getScreen(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_destinations[curNavigationDistinationIndex].label),
-        actions: _getAppBarActionsByScreen(currentScreen as Screen),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: curNavigationDistinationIndex,
-        onDestinationSelected: (value) {
-          setState(() {
-            curNavigationDistinationIndex = value;
-          });
-        },
-        destinations: _destinations,
-      ),
-      body: currentScreen
+    return ChangeNotifierProvider(
+      create: (context) => HostModel(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_destinations[curNavigationDistinationIndex].label),
+          actions: _getAppBarActionsByScreen(currentScreen as Screen),
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: curNavigationDistinationIndex,
+          onDestinationSelected: (value) {
+            setState(() {
+              curNavigationDistinationIndex = value;
+            });
+          },
+          destinations: _destinations,
+        ),
+        body: currentScreen
+      )
     );
   }
 
