@@ -39,8 +39,6 @@ class _FavoriteListState extends State<FavoriteList> {
       padding: widget.padding,
       itemBuilder: (context, index) {
         // todo: implement:
-        if (index >= _items.length) return null;
-
         final item = _items[index];
 
         return Dismissible(

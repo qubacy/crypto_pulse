@@ -51,7 +51,6 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
   static const ANIMATION_DURATION = Duration(milliseconds: 400);
 
   final GlobalKey? _topHintKey;
-  final GlobalKey _homeContentKey = GlobalKey();
 
   double? _topHintHeight;
   double? _curTopHintHeight;
@@ -86,7 +85,6 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
     );
 
     return Column(
-      key: _homeContentKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AnimatedContainer(
