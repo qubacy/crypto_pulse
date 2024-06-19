@@ -16,10 +16,16 @@ class CryptocurrencyList extends StatefulWidget {
 }
 
 class _CryptocurrencyListState extends State<CryptocurrencyList> {
+  static const int END_SCROLL_DELTA = 100;
+
   CryptocurrenciesModel? _model;
   List<CryptoPresentation> _lastItems = [];
 
-  _CryptocurrencyListState();
+  final ScrollController _scrollController = ScrollController();
+
+  _CryptocurrencyListState() {
+    _scrollController.addListener(_onScroll);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,6 @@ class _CryptocurrencyListState extends State<CryptocurrencyList> {
               shrinkWrap: true,
               padding: widget.padding,
               itemBuilder: (context, index) {
-                // todo: implement:
                 final item = _lastItems[index];
 
                 return CryptocurrencyListItem(
@@ -49,6 +54,7 @@ class _CryptocurrencyListState extends State<CryptocurrencyList> {
                 return Divider();
               },
               itemCount: _lastItems.length,
+              controller: _scrollController,
             );
           }
         );
@@ -58,5 +64,17 @@ class _CryptocurrencyListState extends State<CryptocurrencyList> {
 
   void _onFavoriteToggled(CryptoPresentation crypto) {
     _model?.toggleFavoriteCrypto(crypto);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final curScroll = _scrollController.position.pixels;
+
+    if (maxScroll - curScroll <= END_SCROLL_DELTA)
+      _onEndReached();
+  }
+
+  void _onEndReached() {
+    _model?.getNextChunk();
   }
 }

@@ -14,7 +14,7 @@ class AppModel extends ChangeNotifier with CryptocurrenciesModel, HomeModel {
   final BehaviorSubject<List<CryptoPresentation>> _cryptoStreamController = BehaviorSubject();
 
   // todo: to delete (provide the real deal):
-  final List<CryptoPresentation> _cryptoPresentations = List.generate(10, (index) {
+  final List<CryptoPresentation> _cryptoPresentations = List.generate(CHUNK_SIZE, (index) {
     return CryptoPresentation(token: "$index", name: "Crypto #$index", price: "${index * 1000}", isFavorite: Random().nextBool());
   });
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
@@ -51,7 +51,18 @@ class AppModel extends ChangeNotifier with CryptocurrenciesModel, HomeModel {
 
     // todo: calling Domain layer method..
 
+    // todo: to delete (temporal solution):
+    _cryptoPresentations.addAll(
+      List.generate(CHUNK_SIZE, (index) {
+        final finalIndex = index + (CHUNK_SIZE * (_chunkCount - 1));
 
+        return CryptoPresentation(
+          token: "$finalIndex", name: "Crypto #$finalIndex", price: "${finalIndex * 1000}", isFavorite: Random().nextBool()
+        );
+      })
+    );
+
+    _cryptoStreamController.add(_cryptoPresentations);
   }
   
   @override
