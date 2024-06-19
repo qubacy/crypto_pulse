@@ -1,3 +1,5 @@
+import '../api/_common/response/body/CryptocurrencyResponseData.dart';
+
 class HttpRestCrypto {
   final String token;
   final String name;
@@ -22,6 +24,15 @@ class HttpRestCrypto {
       name: name ?? this.name,
       price: price ?? this.price,
       capitalization: capitalization ?? this.capitalization
+    );
+  }
+
+  factory HttpRestCrypto.fromResponse(CryptocurrencyResponseData response) {
+    return HttpRestCrypto(
+      token: response.symbol, 
+      name: response.name, 
+      price: response.quote.usd.price, 
+      capitalization: response.quote.usd.marketCup
     );
   }
 }
