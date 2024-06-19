@@ -1,6 +1,6 @@
 import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
-import 'package:crypto_pulse/application/ui/model/HostModel.dart';
 import 'package:crypto_pulse/application/ui/screen/home/component/list/FavoriteListItem.dart';
+import 'package:crypto_pulse/application/ui/screen/home/model/HomeModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,11 +19,9 @@ class FavoriteList extends StatefulWidget {
 }
 
 class _FavoriteListState extends State<FavoriteList> {
-  static const VISIBLE_ITEM_COUNT = 20;
-
   final GlobalKey? _hintTextKey;
-
-  // todo: to delete:
+  
+  HomeModel? _model;
   List<CryptoPresentation> _lastItems = [];
 
   _FavoriteListState({
@@ -33,8 +31,10 @@ class _FavoriteListState extends State<FavoriteList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HostModel>(
+    return Consumer<HomeModel>(
       builder: (context, model, child) {
+        _model = model; 
+
         return StreamBuilder(
           stream: model.getFavoriteCryptoPresentations(),
           builder: (context, listSnapshot) {
@@ -76,8 +76,6 @@ class _FavoriteListState extends State<FavoriteList> {
       _lastItems.removeAt(index);
     });
 
-    // todo: implement actual removing here..
-
-
+    _model?.removeFromFavorites(cryptocurrencyToRemove);
   }
 }

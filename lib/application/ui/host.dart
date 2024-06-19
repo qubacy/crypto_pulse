@@ -1,4 +1,6 @@
-import 'package:crypto_pulse/application/ui/model/HostModel.dart';
+import 'package:crypto_pulse/application/model/AppModel.dart';
+import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/CryptocurrenciesModel.dart';
+import './screen/home/model/HomeModel.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';
 import 'package:crypto_pulse/application/ui/screen/home/Home.dart';
 import 'package:flutter_svg_icons/flutter_svg_icons.dart';
@@ -31,24 +33,31 @@ class _HostState extends State<Host> {
   Widget build(BuildContext context) {
     Widget currentScreen = _getScreen(context);
 
-    return ChangeNotifierProvider(
-      create: (context) => HostModel(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(_destinations[curNavigationDistinationIndex].label),
-          actions: _getAppBarActionsByScreen(currentScreen as Screen),
-        ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: curNavigationDistinationIndex,
-          onDestinationSelected: (value) {
-            setState(() {
-              curNavigationDistinationIndex = value;
-            });
-          },
-          destinations: _destinations,
-        ),
-        body: currentScreen
-      )
+    return Consumer<AppModel>(
+      builder: (context, model, child) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<HomeModel>(create: (context) => model as HomeModel),
+            ChangeNotifierProvider<CryptocurrenciesModel>(create: (context) => model as CryptocurrenciesModel)
+          ],
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(_destinations[curNavigationDistinationIndex].label),
+              actions: _getAppBarActionsByScreen(currentScreen as Screen),
+            ),
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: curNavigationDistinationIndex,
+              onDestinationSelected: (value) {
+                setState(() {
+                  curNavigationDistinationIndex = value;
+                });
+              },
+              destinations: _destinations,
+            ),
+            body: currentScreen
+          )
+        );
+      }
     );
   }
 

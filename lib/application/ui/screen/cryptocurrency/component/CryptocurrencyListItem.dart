@@ -18,8 +18,8 @@ class CryptocurrencyListItem extends StatelessWidget {
 
     return ListTile(
       leading: IconButton(
-        icon: const Icon(Icons.favorite_border),
-        onPressed: () => _onFavoriteToggled(cryptocurrency.token),
+        icon: cryptocurrency.isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
+        onPressed: () => _onFavoriteToggled(cryptocurrency),
       ),
       title: Text(cryptocurrency.name),
       trailing: Text(cryptocurrency.price, style: textTheme.bodyLarge,),

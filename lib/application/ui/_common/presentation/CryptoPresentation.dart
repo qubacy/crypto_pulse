@@ -10,4 +10,18 @@ class CryptoPresentation {
     required this.price, 
     required this.isFavorite
   });
+
+  CryptoPresentation copyWith({
+    String? token,
+    String? name,
+    String? price,
+    bool? isFavorite
+  }) {
+    return CryptoPresentation(
+      token: token ?? this.token,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      isFavorite: isFavorite ?? this.isFavorite
+    );
+  }
 }
