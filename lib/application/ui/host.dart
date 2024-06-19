@@ -1,4 +1,4 @@
-import 'package:crypto_pulse/application/model/AppModel.dart';
+import 'package:crypto_pulse/application/ui/model/AppModel.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/CryptocurrenciesModel.dart';
 import './screen/home/model/HomeModel.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';

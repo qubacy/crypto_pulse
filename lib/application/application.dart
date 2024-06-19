@@ -1,5 +1,5 @@
 import 'package:crypto_pulse/application/ui/Host.dart';
-import 'package:crypto_pulse/application/model/AppModel.dart';
+import 'package:crypto_pulse/application/ui/model/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
