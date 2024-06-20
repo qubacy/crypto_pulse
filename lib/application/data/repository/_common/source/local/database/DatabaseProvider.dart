@@ -7,11 +7,11 @@ class DatabaseProvider {
 
   static final DatabaseProvider instance = DatabaseProvider._();
 
-  static late Database _database;
+  static Database? _database;
   Future<Database> get database async {
     _database ??= await _initDatabase();
 
-    return _database;
+    return _database!;
   }
 
   DatabaseProvider._();
