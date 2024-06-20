@@ -1,11 +1,13 @@
 class CryptoEntity {
+  static const String TABLE_NAME = "Cryptocurrency";
+
   static const String TOKEN_PROP_NAME = "token";
   static const String NAME_PROP_NAME = "name";
   static const String PRICE_PROP_NAME = "price";
   static const String IS_FAVORITE_PROP_NAME = "is_favorite";
   static const String CAPITALIZATION_PROP_NAME = "capitalization";
 
-  static const String CREATE_TABLE_QUERY = 'CREATE TABLE Cryptocurrency($TOKEN_PROP_NAME TEXT PRIMARY KEY, $NAME_PROP_NAME TEXT NOT NULL, $PRICE_PROP_NAME REAL NOT NULL, $IS_FAVORITE_PROP_NAME INT NOT NULL, $CAPITALIZATION_PROP_NAME REAL NOT NULL)';
+  static const String CREATE_TABLE_QUERY = 'CREATE TABLE $TABLE_NAME($TOKEN_PROP_NAME TEXT PRIMARY KEY, $NAME_PROP_NAME TEXT NOT NULL, $PRICE_PROP_NAME REAL NOT NULL, $IS_FAVORITE_PROP_NAME INT NOT NULL, $CAPITALIZATION_PROP_NAME REAL NOT NULL)';
 
   final String token;
   final String name;

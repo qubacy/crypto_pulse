@@ -1,3 +1,6 @@
+import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
+import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/model/LocalDatabaseCrypto.dart';
+
 class DataCrypto {
   final String token;
   final String name;
@@ -12,6 +15,19 @@ class DataCrypto {
     required this.capitalization,
     required this.isFavorite
   });
+
+  @override
+  bool operator==(Object other) {
+    if (other is! DataCrypto) return false;
+
+    return (
+      other.token == token && 
+      other.name == name &&
+      other.price == price &&
+      other.capitalization == capitalization &&
+      other.isFavorite == isFavorite
+    );
+  }
 
   DataCrypto copyWith({
     String? token,
@@ -28,4 +44,40 @@ class DataCrypto {
       isFavorite: isFavorite ?? this.isFavorite
     );
   }
+
+  factory DataCrypto.fromLocalDatabase(LocalDatabaseCrypto localDatabaseCrypto) {
+    return DataCrypto(
+      token: localDatabaseCrypto.token, 
+      name: localDatabaseCrypto.name, 
+      price: localDatabaseCrypto.price, 
+      capitalization: localDatabaseCrypto.capitalization, 
+      isFavorite: localDatabaseCrypto.isFavorite
+    );
+  }
+
+  LocalDatabaseCrypto toLocalDatabase() {
+    return LocalDatabaseCrypto(
+      token: token,
+      name: name,
+      price: price,
+      capitalization: capitalization,
+      isFavorite: isFavorite
+    );
+  }
+
+  factory DataCrypto.fromRemoteHttpRest({
+    required RemoteHttpRestCrypto remoteHttpRestCrypto,
+    bool? isFavorite
+  }) {
+    return DataCrypto(
+      token: remoteHttpRestCrypto.token, 
+      name: remoteHttpRestCrypto.name, 
+      price: remoteHttpRestCrypto.price, 
+      capitalization: remoteHttpRestCrypto.capitalization, 
+      isFavorite: isFavorite ?? false
+    );
+  }
+  
+  @override
+  int get hashCode => Object.hash(token, name, price, capitalization, isFavorite);
 }

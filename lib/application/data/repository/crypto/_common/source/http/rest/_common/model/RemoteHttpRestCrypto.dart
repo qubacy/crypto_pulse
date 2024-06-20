@@ -1,25 +1,25 @@
 import '../api/_common/response/body/CryptocurrencyResponseData.dart';
 
-class HttpRestCrypto {
+class RemoteHttpRestCrypto {
   final String token;
   final String name;
   final double price;
   final double capitalization;
 
-  const HttpRestCrypto({
+  const RemoteHttpRestCrypto({
     required this.token, 
     required this.name, 
     required this.price, 
     required this.capitalization
   });
 
-  HttpRestCrypto copyWith({
+  RemoteHttpRestCrypto copyWith({
     String? token,
     String? name,
     double? price,
     double? capitalization
   }) {
-    return HttpRestCrypto(
+    return RemoteHttpRestCrypto(
       token: token ?? this.token,
       name: name ?? this.name,
       price: price ?? this.price,
@@ -27,8 +27,8 @@ class HttpRestCrypto {
     );
   }
 
-  factory HttpRestCrypto.fromResponse(CryptocurrencyResponseData response) {
-    return HttpRestCrypto(
+  factory RemoteHttpRestCrypto.fromResponse(CryptocurrencyResponseData response) {
+    return RemoteHttpRestCrypto(
       token: response.symbol, 
       name: response.name, 
       price: response.quote.usd.price, 

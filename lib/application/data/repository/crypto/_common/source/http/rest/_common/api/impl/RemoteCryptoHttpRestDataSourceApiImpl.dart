@@ -6,15 +6,15 @@ import 'package:crypto_pulse/application/data/repository/_common/source/http/uti
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/api/_common/response/body/GetCryptocurrenciesResponse.dart';
 import 'package:http/http.dart' as http;
 
-import '../_common/HttpCryptoRestDataSourceApi.dart';
+import '../_common/RemoteCryptoHttpRestDataSourceApi.dart';
 
-class HttpCryptoRestDataSourceApiImpl implements HttpCryptoRestDataSourceApi {
+class RemoteCryptoHttpRestDataSourceApiImpl implements RemoteCryptoHttpRestDataSourceApi {
   @override
   HttpContext httpContext;
   @override
   List<HttpHeaderInterceptor> interceptors;
 
-  HttpCryptoRestDataSourceApiImpl({required this.httpContext, required this.interceptors});
+  RemoteCryptoHttpRestDataSourceApiImpl({required this.httpContext, required this.interceptors});
 
   @override
   Future<GetCryptocurrenciesResponse> getCryptocurrencies(int count) async {
