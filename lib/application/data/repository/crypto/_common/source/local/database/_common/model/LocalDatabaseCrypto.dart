@@ -7,13 +7,26 @@ class LocalDatabaseCrypto {
   final bool isFavorite;
   final double capitalization;
 
-  LocalDatabaseCrypto({
+  const LocalDatabaseCrypto({
     required this.token, 
     required this.name,
     required this.price,
     required this.isFavorite,
     required this.capitalization
   });
+
+  @override
+  bool operator==(Object other) {
+    if (other is! LocalDatabaseCrypto) return false;
+
+    return (
+      other.token == token && 
+      other.name == name &&
+      other.price == price &&
+      other.capitalization == capitalization &&
+      other.isFavorite == isFavorite
+    );
+  }
 
   factory LocalDatabaseCrypto.fromEntity(CryptoEntity entity) {
     return LocalDatabaseCrypto(
@@ -34,4 +47,7 @@ class LocalDatabaseCrypto {
       capitalization: capitalization
     );
   }
+
+  @override
+  int get hashCode => Object.hash(token, name, price, capitalization, isFavorite);
 }
