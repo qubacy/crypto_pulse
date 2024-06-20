@@ -55,13 +55,13 @@ class DataCrypto {
     );
   }
 
-  LocalDatabaseCrypto toLocalDatabase() {
+  LocalDatabaseCrypto toLocalDatabase({bool? newIsFavorite}) {
     return LocalDatabaseCrypto(
       token: token,
       name: name,
       price: price,
       capitalization: capitalization,
-      isFavorite: isFavorite
+      isFavorite: newIsFavorite ?? isFavorite
     );
   }
 
