@@ -32,6 +32,15 @@ class QuoteResponseData {
 
   QuoteResponseData({required this.usd});
 
+  @override
+  bool operator==(Object other) {
+    if (other is! QuoteResponseData) return false;
+
+    return (
+      other.usd == usd
+    );
+  }
+
   factory QuoteResponseData.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -40,6 +49,9 @@ class QuoteResponseData {
       _ => throw FormatException()
     };
   }
+
+  @override
+  int get hashCode => usd.hashCode;
 }
 
 class USDQuoteResponseData {
@@ -51,6 +63,16 @@ class USDQuoteResponseData {
 
   USDQuoteResponseData({required this.price, required this.marketCup});
 
+  @override
+  bool operator==(Object other) {
+    if (other is! USDQuoteResponseData) return false;
+
+    return (
+      other.price == price && 
+      other.marketCup == marketCup
+    );
+  }
+
   factory USDQuoteResponseData.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -60,4 +82,7 @@ class USDQuoteResponseData {
       _ => throw FormatException()
     };
   }
+
+  @override
+  int get hashCode => Object.hash(price, marketCup);
 }
