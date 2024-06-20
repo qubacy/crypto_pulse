@@ -12,7 +12,7 @@ class HttpDataSourceUtil {
     required List<HttpHeaderInterceptor> headerInterceptors
   }) async {
     for (HttpHeaderInterceptor headerInterceptor in headerInterceptors) {
-      headerInterceptor.intercept(headers);
+      await headerInterceptor.intercept(headers);
     }
 
     return headers;

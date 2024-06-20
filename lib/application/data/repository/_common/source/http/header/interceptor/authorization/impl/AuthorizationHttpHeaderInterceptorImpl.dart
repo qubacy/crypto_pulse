@@ -8,7 +8,7 @@ class AuthorizationHttpHeaderInterceptorImpl implements AuthorizationHttpHeaderI
   AuthorizationHttpHeaderInterceptorImpl({required this.localTokenEnvironmentDataSource});
 
   @override
-  void intercept(Map<String, String> headers) async {
+  Future<void> intercept(Map<String, String> headers) async {
     final token = await localTokenEnvironmentDataSource.loadToken();
 
     headers[AuthorizationHttpHeaderInterceptor.AUTHORIZATION_HEADER_NAME] = token;

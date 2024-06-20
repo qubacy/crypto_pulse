@@ -1,3 +1,3 @@
 abstract class HttpHeaderInterceptor {
-  void intercept(Map<String, String> headers);
+  Future<void> intercept(Map<String, String> headers);
 }
