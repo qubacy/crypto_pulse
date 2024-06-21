@@ -23,6 +23,19 @@ class CryptoEntity {
     required this.capitalization
   });
 
+  @override
+  bool operator==(Object other) {
+    if (other is! CryptoEntity) return false;
+
+    return (
+      other.token == token &&
+      other.name == name &&
+      other.price == price &&
+      other.isFavorite == isFavorite &&
+      other.capitalization == capitalization
+    );
+  }
+
   factory CryptoEntity.fromMap(Map<String, dynamic> map) {
     final token = map[TOKEN_PROP_NAME] as String;
     final name = map[NAME_PROP_NAME] as String;
@@ -48,4 +61,7 @@ class CryptoEntity {
       CAPITALIZATION_PROP_NAME: capitalization
     };
   }
+
+  @override
+  int get hashCode => Object.hash(token, name, price, isFavorite, capitalization);
 }

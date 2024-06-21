@@ -27,6 +27,18 @@ class RemoteHttpRestCrypto {
     );
   }
 
+  @override
+  bool operator==(Object other) {
+    if (other is! RemoteHttpRestCrypto) return false;
+
+    return (
+      other.token == token &&
+      other.name == name &&
+      other.price == price &&
+      other.capitalization == capitalization
+    );
+  }
+
   factory RemoteHttpRestCrypto.fromResponse(CryptocurrencyResponseData response) {
     return RemoteHttpRestCrypto(
       token: response.symbol, 
@@ -35,4 +47,7 @@ class RemoteHttpRestCrypto {
       capitalization: response.quote.usd.marketCap
     );
   }
+
+  @override
+  int get hashCode => Object.hash(token, name, price, capitalization);
 }
