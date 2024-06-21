@@ -22,7 +22,7 @@ class LocalCryptoDatabaseDataSourceDaoImpl implements LocalCryptoDatabaseDataSou
   
   @override
   Future<void> saveCryptocurrencies(List<CryptoEntity> cryptocurrencies) async {
-    return database.transaction((tx) async {
+    await database.transaction((tx) async {
       for (CryptoEntity cryptocurrency in cryptocurrencies) {
         final selectedCryptocurrency = await tx.query(
           CryptoEntity.TABLE_NAME,
@@ -32,13 +32,13 @@ class LocalCryptoDatabaseDataSourceDaoImpl implements LocalCryptoDatabaseDataSou
         final cryptocurrencyMap = cryptocurrency.toMap();
 
         if (selectedCryptocurrency.isEmpty) {
-          database.insert(CryptoEntity.TABLE_NAME, cryptocurrencyMap);
+          await tx.insert(CryptoEntity.TABLE_NAME, cryptocurrencyMap);
         } else {
-          database.update(CryptoEntity.TABLE_NAME, cryptocurrencyMap);
+          await tx.update(CryptoEntity.TABLE_NAME, cryptocurrencyMap);
         }
       }
-
-      return Future.value();
     });
+
+    return Future.value();
   }
 }
