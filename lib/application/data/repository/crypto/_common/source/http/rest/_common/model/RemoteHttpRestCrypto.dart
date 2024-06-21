@@ -32,7 +32,7 @@ class RemoteHttpRestCrypto {
       token: response.symbol, 
       name: response.name, 
       price: response.quote.usd.price, 
-      capitalization: response.quote.usd.marketCup
+      capitalization: response.quote.usd.marketCap
     );
   }
 }

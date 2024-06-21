@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Quote Response Data tests', () {
     test('fromJson() test', () {
-      final USDQuoteResponseData usdQuoteResponseData = USDQuoteResponseData(price: 1, marketCup: 2);
+      final USDQuoteResponseData usdQuoteResponseData = USDQuoteResponseData(price: 1, marketCap: 2);
       final json = {
         QuoteResponseData.USD_PROP_NAME: {
-          USDQuoteResponseData.MARKET_CUP_PROP_NAME: usdQuoteResponseData.marketCup,
+          USDQuoteResponseData.MARKET_CUP_PROP_NAME: usdQuoteResponseData.marketCap,
           USDQuoteResponseData.PRICE_PROP_NAME: usdQuoteResponseData.price
         }
       };

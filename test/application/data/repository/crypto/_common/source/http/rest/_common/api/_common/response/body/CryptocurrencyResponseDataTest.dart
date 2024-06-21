@@ -7,14 +7,14 @@ void main() {
       final String name = 'test';
       final String symbol = 'TST';
 
-      final USDQuoteResponseData usdQuoteResponseData = USDQuoteResponseData(price: 1, marketCup: 2);
+      final USDQuoteResponseData usdQuoteResponseData = USDQuoteResponseData(price: 1, marketCap: 2);
       final QuoteResponseData quoteResponseData = QuoteResponseData(usd: usdQuoteResponseData);
       final json = {
         CryptocurrencyResponseData.NAME_PROP_NAME: name,
         CryptocurrencyResponseData.SYMBOL_PROP_NAME: symbol,
         CryptocurrencyResponseData.QUOTE_PROP_NAME: {
           QuoteResponseData.USD_PROP_NAME: {
-            USDQuoteResponseData.MARKET_CUP_PROP_NAME: usdQuoteResponseData.marketCup,
+            USDQuoteResponseData.MARKET_CUP_PROP_NAME: usdQuoteResponseData.marketCap,
             USDQuoteResponseData.PRICE_PROP_NAME: usdQuoteResponseData.price
           }
         }

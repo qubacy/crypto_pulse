@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto_pulse/application/data/repository/_common/source/http/context/_common/HttpContext.dart';
 import 'package:crypto_pulse/application/data/repository/_common/source/http/header/interceptor/_common/HttpHeaderInterceptor.dart';
@@ -10,17 +11,23 @@ import '../_common/RemoteCryptoHttpRestDataSourceApi.dart';
 
 class RemoteCryptoHttpRestDataSourceApiImpl implements RemoteCryptoHttpRestDataSourceApi {
   @override
+  http.Client httpClient;
+  @override
   HttpContext httpContext;
   @override
   List<HttpHeaderInterceptor> interceptors;
 
-  RemoteCryptoHttpRestDataSourceApiImpl({required this.httpContext, required this.interceptors});
+  RemoteCryptoHttpRestDataSourceApiImpl({
+    required this.httpClient, 
+    required this.httpContext, 
+    required this.interceptors
+  });
 
   @override
   Future<GetCryptocurrenciesResponse> getCryptocurrencies(int count) async {
     final uri = HttpDataSourceUtil.getFullUri(httpContext, "/v1/cryptocurrency/listings/latest");
     final headers = await HttpDataSourceUtil.applyHeaderInterceptors(headerInterceptors: interceptors);
-    final response = await http.get(uri, headers: headers);
+    final response = await httpClient.get(uri, headers: headers);
     final responseBodyJson = jsonDecode(response.body);
 
     return GetCryptocurrenciesResponse.fromJson(responseBodyJson);

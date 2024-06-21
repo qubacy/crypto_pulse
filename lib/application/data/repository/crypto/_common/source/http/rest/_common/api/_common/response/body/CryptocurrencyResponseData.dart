@@ -40,7 +40,7 @@ class CryptocurrencyResponseData {
 }
 
 class QuoteResponseData {
-  static const USD_PROP_NAME = "usd";
+  static const USD_PROP_NAME = "USD";
 
   final USDQuoteResponseData usd;
 
@@ -70,12 +70,12 @@ class QuoteResponseData {
 
 class USDQuoteResponseData {
   static const PRICE_PROP_NAME = "price";
-  static const MARKET_CUP_PROP_NAME = "market_cup";
+  static const MARKET_CUP_PROP_NAME = "market_cap";
 
   final double price;
-  final double marketCup;
+  final double marketCap;
 
-  USDQuoteResponseData({required this.price, required this.marketCup});
+  USDQuoteResponseData({required this.price, required this.marketCap});
 
   @override
   bool operator==(Object other) {
@@ -83,7 +83,7 @@ class USDQuoteResponseData {
 
     return (
       other.price == price && 
-      other.marketCup == marketCup
+      other.marketCap == marketCap
     );
   }
 
@@ -92,11 +92,11 @@ class USDQuoteResponseData {
       {
         PRICE_PROP_NAME: double price,
         MARKET_CUP_PROP_NAME: double marketCup
-      } => USDQuoteResponseData(price: price, marketCup: marketCup),
+      } => USDQuoteResponseData(price: price, marketCap: marketCup),
       _ => throw FormatException()
     };
   }
 
   @override
-  int get hashCode => Object.hash(price, marketCup);
+  int get hashCode => Object.hash(price, marketCap);
 }
