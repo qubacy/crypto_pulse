@@ -13,6 +13,17 @@ class CryptocurrencyResponseData {
     required this.quote
   });
 
+  @override
+  bool operator==(Object other) {
+    if (other is! CryptocurrencyResponseData) return false;
+
+    return (
+      other.name == name &&
+      other.symbol == symbol &&
+      other.quote == quote
+    );
+  }
+
   factory CryptocurrencyResponseData.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -23,6 +34,9 @@ class CryptocurrencyResponseData {
       _ => throw const FormatException()
     };
   }
+
+  @override
+  int get hashCode => Object.hash(name, symbol, quote);
 }
 
 class QuoteResponseData {
