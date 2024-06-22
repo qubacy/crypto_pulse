@@ -4,12 +4,20 @@ import 'package:crypto_pulse/application/data/repository/crypto/_common/source/h
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/CryptocurrencyUpdater.dart';
 
+class IntWrapper {
+  int _value;
+  int get value => _value;
+  set value(int value) => _value = value;
+
+  IntWrapper({int value = 0}) : _value = value;
+}
+
 class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource;
 
   CryptocurrencyUpdaterImpl({required this.remoteCryptoHttpRestDataSource});
 
-  final ReceivePort _receivePort = ReceivePort();
+  ReceivePort? _receivePort;
   Isolate? _isolate;
   late SendPort _sendPort;
 
@@ -19,24 +27,30 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   void start(int count) async {
     _lastCount = count;
 
-    if (_isolate == null) _initIsolate();
+    if (_isolate == null) await _initIsolate();
 
     _sendPort.send(count);
   }
 
-  void _initIsolate() async {
-    _isolate = await Isolate.spawn(_update, _receivePort.sendPort);
-    _sendPort = await _receivePort.first;
+  Future<void> _initIsolate() async {
+    _receivePort = ReceivePort();
+    _isolate = await Isolate.spawn(_update, _receivePort!.sendPort);
+    _sendPort = await _receivePort!.first;
 
-    _receivePort.listen((data) {
+    _startListeningForIsolateData();
+  }
+
+  Future<void> _startListeningForIsolateData() async {
+    await for (var data in _receivePort!) {
       final cryptocurrencies = data as List<RemoteHttpRestCrypto>;
 
       callback.onCryptocurrenciesGotten(_lastCount, cryptocurrencies);
-    });
+    }
   }
 
   @override
   void stop() async {
+    _receivePort?.close();
     _isolate?.kill();
 
     _lastCount = 0; // todo: rethink twice;
@@ -48,21 +62,31 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
 
     sendPort.send(receivePort.sendPort);
 
-    int cryptoCount = 0;
-
-    receivePort.listen((dynamic data) {
-      switch (data) {
-        case int count: cryptoCount = count;
-        default: throw FormatException();
-      }
-    });
+    IntWrapper cryptoCount = IntWrapper();
+    
+    _startListeningForMessagesInIsolate(receivePort, cryptoCount);
 
     while (true) {
+      if (cryptoCount.value > 0) {
+        final cryptocurrencies = await remoteCryptoHttpRestDataSource
+          .getCryptocurrencies(cryptoCount.value);
+
+        sendPort.send(cryptocurrencies);
+      }
+
       await Future.delayed(CryptocurrencyUpdater.UPDATE_TIMEOUT_DURATION);
+    }
+  }
 
-      final cryptocurrencies = await remoteCryptoHttpRestDataSource.getCryptocurrencies(cryptoCount);
-
-      sendPort.send(cryptocurrencies);
+  Future<void> _startListeningForMessagesInIsolate(
+    ReceivePort receivePort, 
+    IntWrapper cryptoCount
+  ) async {
+    await for (var data in receivePort) {
+      switch (data) {
+        case int count: cryptoCount.value = count;
+        default: throw const FormatException();
+      }
     }
   }
 }
