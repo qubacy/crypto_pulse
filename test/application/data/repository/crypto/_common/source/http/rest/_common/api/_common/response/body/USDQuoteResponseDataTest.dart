@@ -11,7 +11,7 @@ void main() {
         USDQuoteResponseData.MARKET_CUP_PROP_NAME: marketCup
       };
 
-      final expectedUSDQuoteResponseData = USDQuoteResponseData(marketCap: marketCup, price: price);
+      const expectedUSDQuoteResponseData = USDQuoteResponseData(marketCap: marketCup, price: price);
 
       final gottenUSDQuoteResponseData = USDQuoteResponseData.fromJson(json);
 

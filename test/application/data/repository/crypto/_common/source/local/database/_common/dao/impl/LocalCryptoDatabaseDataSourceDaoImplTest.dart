@@ -27,7 +27,7 @@ void main() {
     test('getCryptocurrencies() test', () async {
       const count = 1;
 
-      final cryptoEntity = CryptoEntity(
+      const cryptoEntity = CryptoEntity(
         token: 'test', 
         name: 'test', 
         price: 1, 
@@ -53,7 +53,7 @@ void main() {
     });
 
     test('saveCryptocurrencies() on new data test', () async {
-      final cryptoEntity = CryptoEntity(
+      const cryptoEntity = CryptoEntity(
         token: 'text', 
         name: 'text', 
         price: 1, 
@@ -82,7 +82,7 @@ void main() {
     });
 
     test('saveCryptocurrencies() on existing data test', () async {
-      final cryptoEntity = CryptoEntity(
+      const cryptoEntity = CryptoEntity(
         token: 'text', 
         name: 'text', 
         price: 1, 

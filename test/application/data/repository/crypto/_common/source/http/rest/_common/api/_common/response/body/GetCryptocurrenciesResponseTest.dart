@@ -5,9 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Get Cryptocurrencies Response tests', () {
     test('fromJson() test', () {
-      final USDQuoteResponseData usdQuoteResponseData = USDQuoteResponseData(price: 1, marketCap: 2);
-      final QuoteResponseData quoteResponseData = QuoteResponseData(usd: usdQuoteResponseData);
-      final CryptocurrencyResponseData cryptocurrencyResponseData = 
+      const USDQuoteResponseData usdQuoteResponseData = USDQuoteResponseData(price: 1, marketCap: 2);
+      const QuoteResponseData quoteResponseData = QuoteResponseData(usd: usdQuoteResponseData);
+      const CryptocurrencyResponseData cryptocurrencyResponseData = 
         CryptocurrencyResponseData(name: 'test', symbol: 'TST', quote: quoteResponseData);
       final json = {
         GetCryptocurrenciesResponse.DATA_PROP_NAME: [
@@ -24,10 +24,11 @@ void main() {
         ]
       };
 
-      GetCryptocurrenciesResponse expectedGetCryptocurrenciesResponse = 
+      const GetCryptocurrenciesResponse expectedGetCryptocurrenciesResponse = 
         GetCryptocurrenciesResponse(cryptocurrencyResponseDataList: [cryptocurrencyResponseData]);
 
-      GetCryptocurrenciesResponse gottenGetCryptocurrenciesResponse = GetCryptocurrenciesResponse.fromJson(json);
+      final GetCryptocurrenciesResponse gottenGetCryptocurrenciesResponse = 
+        GetCryptocurrenciesResponse.fromJson(json);
 
       expect(gottenGetCryptocurrenciesResponse, expectedGetCryptocurrenciesResponse);
     });

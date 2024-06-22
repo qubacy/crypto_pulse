@@ -5,7 +5,7 @@ class GetCryptocurrenciesResponse {
 
   final List<CryptocurrencyResponseData> cryptocurrencyResponseDataList;
 
-  GetCryptocurrenciesResponse({required this.cryptocurrencyResponseDataList});
+  const GetCryptocurrenciesResponse({required this.cryptocurrencyResponseDataList});
 
   @override
   bool operator==(Object other) {

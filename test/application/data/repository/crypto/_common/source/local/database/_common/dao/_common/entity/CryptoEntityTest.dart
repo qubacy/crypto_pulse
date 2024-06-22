@@ -19,7 +19,7 @@ void main() {
         CryptoEntity.IS_FAVORITE_PROP_NAME: isFavorite
       }; 
 
-      final expectedCryptoEntity = CryptoEntity(
+      const expectedCryptoEntity = CryptoEntity(
         token: token, 
         name: name, 
         price: price, 
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('toMap() test', () {
-      CryptoEntity cryptoEntity = CryptoEntity(
+      const CryptoEntity cryptoEntity = CryptoEntity(
         token: 'test', 
         name: 'test', 
         price: 1, 

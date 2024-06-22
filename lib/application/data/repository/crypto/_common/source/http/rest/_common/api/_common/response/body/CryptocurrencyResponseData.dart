@@ -7,7 +7,7 @@ class CryptocurrencyResponseData {
   final String symbol;
   final QuoteResponseData quote;
 
-  CryptocurrencyResponseData({
+  const CryptocurrencyResponseData({
     required this.name,
     required this.symbol,
     required this.quote
@@ -44,7 +44,7 @@ class QuoteResponseData {
 
   final USDQuoteResponseData usd;
 
-  QuoteResponseData({required this.usd});
+  const QuoteResponseData({required this.usd});
 
   @override
   bool operator==(Object other) {
@@ -75,7 +75,7 @@ class USDQuoteResponseData {
   final double price;
   final double marketCap;
 
-  USDQuoteResponseData({required this.price, required this.marketCap});
+  const USDQuoteResponseData({required this.price, required this.marketCap});
 
   @override
   bool operator==(Object other) {

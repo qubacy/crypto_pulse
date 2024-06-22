@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Remote Http Rest Crypto tests', () {
     test('fromResponse() test', () {
-      final CryptocurrencyResponseData cryptocurrencyResponseData = 
+      const CryptocurrencyResponseData cryptocurrencyResponseData = 
         CryptocurrencyResponseData(
           name: 'test',
           symbol: 'test',

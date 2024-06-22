@@ -15,7 +15,7 @@ class CryptoEntity {
   final bool isFavorite;
   final double capitalization;
 
-  CryptoEntity({
+  const CryptoEntity({
     required this.token, 
     required this.name,
     required this.price,
