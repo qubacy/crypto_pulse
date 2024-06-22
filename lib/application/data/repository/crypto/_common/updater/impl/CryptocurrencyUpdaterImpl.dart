@@ -18,6 +18,7 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   CryptocurrencyUpdaterImpl({required this.remoteCryptoHttpRestDataSource});
 
   ReceivePort? _receivePort;
+  Stream<dynamic>? _receiveBroadcastStream;
   Isolate? _isolate;
   late SendPort _sendPort;
 
@@ -33,18 +34,25 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   }
 
   Future<void> _initIsolate() async {
-    _receivePort = ReceivePort();
-    _isolate = await Isolate.spawn(_update, _receivePort!.sendPort);
-    _sendPort = await _receivePort!.first;
+    ReceivePort receivePort = ReceivePort();
+
+    _isolate = await Isolate.spawn(_update, [receivePort.sendPort, remoteCryptoHttpRestDataSource]);
+
+    _receiveBroadcastStream = receivePort.asBroadcastStream();
+    _sendPort = await _receiveBroadcastStream!.first;
+
+    _receivePort = receivePort;
 
     _startListeningForIsolateData();
   }
 
   Future<void> _startListeningForIsolateData() async {
-    await for (var data in _receivePort!) {
-      final cryptocurrencies = data as List<RemoteHttpRestCrypto>;
-
-      callback.onCryptocurrenciesGotten(_lastCount, cryptocurrencies);
+    await for (var data in _receiveBroadcastStream!) {
+      switch (data) {
+        case List<RemoteHttpRestCrypto> remoteHttpRestCryptoList: 
+          callback.onCryptocurrenciesGotten(_lastCount, remoteHttpRestCryptoList);
+        default: throw const FormatException();
+      }
     }
   }
 
@@ -57,8 +65,11 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
     _isolate = null;
   }
   
-  void _update(SendPort sendPort) async {
+  void _update(List<dynamic> args) async {
     ReceivePort receivePort = ReceivePort();
+
+    SendPort sendPort = args[0];
+    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = args[1];
 
     sendPort.send(receivePort.sendPort);
 
@@ -67,6 +78,8 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
     _startListeningForMessagesInIsolate(receivePort, cryptoCount);
 
     while (true) {
+      print("_update(): ${cryptoCount._value}");
+
       if (cryptoCount.value > 0) {
         final cryptocurrencies = await remoteCryptoHttpRestDataSource
           .getCryptocurrencies(cryptoCount.value);
