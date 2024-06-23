@@ -24,18 +24,18 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
     required this.remoteCryptoHttpRestDataSource,
     required this.cryptocurrencyUpdater
   }) {
-    dataCryptoStream = _cryptoStreamController.stream;
+    dataCryptoStream = _cryptoStreamController.stream.asBroadcastStream();
 
     cryptocurrencyUpdater.setCallback(this);
   }
   
   @override
-  void loadCryptocurrencies(int count) async {
-    _retrieveCryptocurrencies(count);
+  Future<void> loadCryptocurrencies(int count) async {
+    await _retrieveCryptocurrencies(count);
     _startCryptocurrencyUpdater(count);
   }
 
-  void _retrieveCryptocurrencies(int count, {List<RemoteHttpRestCrypto>? gottenRemoteCryptocurrencies}) async {
+  Future<void> _retrieveCryptocurrencies(int count, {List<RemoteHttpRestCrypto>? gottenRemoteCryptocurrencies}) async {
     final localCryptocurrencies = await localCryptoDatabaseDataSource.getCryptocurrencies(count);
     final localDataCryptocurrencies = localCryptocurrencies.map((item) => DataCrypto.fromLocalDatabase(item)).toList();
     // todo: seems overkilling:
@@ -49,7 +49,7 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
 
     final remoteCryptocurrencies = gottenRemoteCryptocurrencies ?? await remoteCryptoHttpRestDataSource.getCryptocurrencies(count);
     final remoteDataCryptocurrencies = remoteCryptocurrencies.map(
-      (item) => DataCrypto.fromRemoteHttpRest(remoteHttpRestCrypto: item, isFavorite: localDataCryptocurrencyMap[item.token])
+      (item) => DataCrypto.fromRemoteHttpRest(remoteHttpRestCrypto: item, isFavorite: localDataCryptocurrencyMap[item.token]?.isFavorite)
     ).toList();
 
     if (!_compareDataCryptocurrencyLists(localDataCryptocurrencies, remoteDataCryptocurrencies)) {
