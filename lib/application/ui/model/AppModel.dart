@@ -15,7 +15,7 @@ class AppModel extends ChangeNotifier with CryptocurrenciesModel, HomeModel {
 
   // todo: to delete (provide the real deal):
   final List<CryptoPresentation> _cryptoPresentations = List.generate(CHUNK_SIZE, (index) {
-    return CryptoPresentation(token: "$index", name: "Crypto #$index", price: "${index * 1000}", isFavorite: Random().nextBool());
+    return CryptoPresentation(token: "$index", name: "Crypto #$index", price: "${index * 1000}", capitalization: 1, isFavorite: Random().nextBool());
   });
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
   
@@ -57,7 +57,7 @@ class AppModel extends ChangeNotifier with CryptocurrenciesModel, HomeModel {
         final finalIndex = index + (CHUNK_SIZE * (_chunkCount - 1));
 
         return CryptoPresentation(
-          token: "$finalIndex", name: "Crypto #$finalIndex", price: "${finalIndex * 1000}", isFavorite: Random().nextBool()
+          token: "$finalIndex", name: "Crypto #$finalIndex", price: "${finalIndex * 1000}", capitalization: finalIndex * 1000000, isFavorite: Random().nextBool()
         );
       })
     );
