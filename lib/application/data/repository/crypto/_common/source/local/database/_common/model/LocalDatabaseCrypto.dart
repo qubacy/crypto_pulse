@@ -15,6 +15,22 @@ class LocalDatabaseCrypto {
     required this.capitalization
   });
 
+  LocalDatabaseCrypto copyWith({
+    String? newToken,
+    String? newName,
+    double? newPrice,
+    bool? newIsFavorite,
+    double? newCapitalization
+  }) {
+    return LocalDatabaseCrypto(
+      token: newToken ?? token,
+      name: newName ?? name,
+      price: newPrice ?? price,
+      isFavorite: newIsFavorite ?? isFavorite, 
+      capitalization: newCapitalization ?? capitalization
+    );
+  }
+
   @override
   bool operator==(Object other) {
     if (other is! LocalDatabaseCrypto) return false;

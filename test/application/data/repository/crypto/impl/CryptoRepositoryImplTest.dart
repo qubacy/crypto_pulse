@@ -99,21 +99,24 @@ void main() {
     });
 
     test('addToFavorites() test', () async {
-      const DataCrypto dataCrypto = DataCrypto(
-        token: 'test', 
-        name: 'test', 
-        price: 1, 
-        capitalization: 2, 
-        isFavorite: false
-      );
+      const LocalDatabaseCrypto localDatabaseCrypto = 
+        LocalDatabaseCrypto(
+          token: 'token', 
+          name: 'name', 
+          price: 1, 
+          isFavorite: false, 
+          capitalization: 2
+        );
 
-      final LocalDatabaseCrypto expectedLocalDatabaseCryptoToSave = dataCrypto.toLocalDatabase(newIsFavorite: true);
+      final LocalDatabaseCrypto expectedLocalDatabaseCryptoToSave = localDatabaseCrypto.copyWith(newIsFavorite: true);
 
       late LocalDatabaseCrypto gottenLocalDatabaseCryptoToSave;    
 
       final MockLocalCryptoDatabaseDataSource localCryptoDatabaseDataSourceMock =
         MockLocalCryptoDatabaseDataSource();
         
+      when(localCryptoDatabaseDataSourceMock.getCryptocurrencyByToken(localDatabaseCrypto.token))
+        .thenAnswer((invocation) async => localDatabaseCrypto);
       when(localCryptoDatabaseDataSourceMock.saveCryptocurrencies(any))
         .thenAnswer((invocation) async {
           gottenLocalDatabaseCryptoToSave = 
@@ -130,7 +133,7 @@ void main() {
         cryptocurrencyUpdater: cryptocurrencyUpdaterMock
       );
 
-      await cryptoRepositoryImpl.addToFavorites(dataCrypto);
+      await cryptoRepositoryImpl.addToFavorites(localDatabaseCrypto.token);
 
       verify(localCryptoDatabaseDataSourceMock.saveCryptocurrencies(any));
 
@@ -138,21 +141,24 @@ void main() {
     });
 
     test('removeFromFavorites() test', () async {
-      const DataCrypto dataCrypto = DataCrypto(
-        token: 'test', 
-        name: 'test', 
-        price: 1, 
-        capitalization: 2, 
-        isFavorite: true
-      );
+      const LocalDatabaseCrypto localDatabaseCrypto = 
+        LocalDatabaseCrypto(
+          token: 'token', 
+          name: 'name', 
+          price: 1, 
+          isFavorite: true, 
+          capitalization: 2
+        );
 
-      final LocalDatabaseCrypto expectedLocalDatabaseCryptoToSave = dataCrypto.toLocalDatabase(newIsFavorite: false);
+      final LocalDatabaseCrypto expectedLocalDatabaseCryptoToSave = localDatabaseCrypto.copyWith(newIsFavorite: false);
 
       late LocalDatabaseCrypto gottenLocalDatabaseCryptoToSave;    
 
       final MockLocalCryptoDatabaseDataSource localCryptoDatabaseDataSourceMock =
         MockLocalCryptoDatabaseDataSource();
         
+      when(localCryptoDatabaseDataSourceMock.getCryptocurrencyByToken(localDatabaseCrypto.token))
+        .thenAnswer((invocation) async => localDatabaseCrypto);
       when(localCryptoDatabaseDataSourceMock.saveCryptocurrencies(any))
         .thenAnswer((invocation) async {
           gottenLocalDatabaseCryptoToSave = 
@@ -169,7 +175,7 @@ void main() {
         cryptocurrencyUpdater: cryptocurrencyUpdaterMock
       );
 
-      await cryptoRepositoryImpl.removeFromFavorites(dataCrypto);
+      await cryptoRepositoryImpl.removeFromFavorites(localDatabaseCrypto.token);
 
       verify(localCryptoDatabaseDataSourceMock.saveCryptocurrencies(any));
 

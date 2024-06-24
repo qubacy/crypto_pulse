@@ -76,7 +76,9 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
     
     if (localDatabaseCrypto == null) throw Exception();
 
-    await localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCrypto]);
+    final localDatabaseCryptoToSave = localDatabaseCrypto.copyWith(newIsFavorite: isFavorite);
+
+    await localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCryptoToSave]);
   }
 
   /// Strict comparison including order check;

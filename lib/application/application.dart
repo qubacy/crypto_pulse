@@ -1,7 +1,8 @@
 import 'package:crypto_pulse/application/ui/Host.dart';
-import 'package:crypto_pulse/application/ui/model/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'ui/model/_common/AppModel.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
