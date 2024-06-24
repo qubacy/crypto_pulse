@@ -43,7 +43,7 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
       localDataCryptocurrencies, key: (item) => item.token, value: (item) => item
     );
 
-    if (localCryptocurrencies.isNotEmpty) {
+    if (localCryptocurrencies.isNotEmpty && gottenRemoteCryptocurrencies == null) {
       _cryptoStreamController.add(localDataCryptocurrencies);
     }
 
@@ -62,20 +62,20 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   }
   
   @override
-  void addToFavorites(DataCrypto crypto) {
-    _changeFavoriteState(crypto);
+  Future<void> addToFavorites(DataCrypto crypto) async {
+    await _changeFavoriteState(crypto, true);
   }
   
   @override
-  void removeFromFavorites(DataCrypto crypto) {
-    _changeFavoriteState(crypto);
+  Future<void> removeFromFavorites(DataCrypto crypto) async {
+    await _changeFavoriteState(crypto, false);
   }
 
   // todo: is it alright?:
-  void _changeFavoriteState(DataCrypto crypto) {
-    final localDatabaseCrypto = crypto.toLocalDatabase(newIsFavorite: !crypto.isFavorite);
+  Future<void> _changeFavoriteState(DataCrypto crypto, bool isFavorite) async {
+    final localDatabaseCrypto = crypto.toLocalDatabase(newIsFavorite: isFavorite);
 
-    localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCrypto]);
+    await localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCrypto]);
   }
 
   /// Strict comparison including order check;
@@ -96,7 +96,7 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   }
   
   @override
-  void onCryptocurrenciesGotten(int count, List<RemoteHttpRestCrypto> cryptocurrencies) {
-    _retrieveCryptocurrencies(count, gottenRemoteCryptocurrencies: cryptocurrencies);
+  Future<void> onCryptocurrenciesGotten(int count, List<RemoteHttpRestCrypto> cryptocurrencies) async {
+    await _retrieveCryptocurrencies(count, gottenRemoteCryptocurrencies: cryptocurrencies);
   }
 }
