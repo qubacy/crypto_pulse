@@ -62,18 +62,19 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   }
   
   @override
-  Future<void> addToFavorites(DataCrypto crypto) async {
-    await _changeFavoriteState(crypto, true);
+  Future<void> addToFavorites(String cryptoToken) async {
+    await _changeFavoriteState(cryptoToken, true);
   }
   
   @override
-  Future<void> removeFromFavorites(DataCrypto crypto) async {
-    await _changeFavoriteState(crypto, false);
+  Future<void> removeFromFavorites(String cryptoToken) async {
+    await _changeFavoriteState(cryptoToken, false);
   }
 
-  // todo: is it alright?:
-  Future<void> _changeFavoriteState(DataCrypto crypto, bool isFavorite) async {
-    final localDatabaseCrypto = crypto.toLocalDatabase(newIsFavorite: isFavorite);
+  Future<void> _changeFavoriteState(String cryptoToken, bool isFavorite) async {
+    final localDatabaseCrypto = await localCryptoDatabaseDataSource.getCryptocurrencyByToken(cryptoToken); //crypto.toLocalDatabase(newIsFavorite: isFavorite);
+    
+    if (localDatabaseCrypto == null) throw Exception();
 
     await localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCrypto]);
   }

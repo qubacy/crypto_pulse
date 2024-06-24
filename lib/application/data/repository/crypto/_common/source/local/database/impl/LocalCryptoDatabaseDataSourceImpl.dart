@@ -17,6 +17,15 @@ class LocalCryptoDatabaseDataSourceImpl implements LocalCryptoDatabaseDataSource
   }
 
   @override
+  Future<LocalDatabaseCrypto?> getCryptocurrencyByToken(String token) async {
+    final cryptocurrencyEntity = await dao.getCryptocurrencyByToken(token);
+
+    if (cryptocurrencyEntity == null) return null;
+  
+    return LocalDatabaseCrypto.fromEntity(cryptocurrencyEntity);
+  }
+
+  @override
   Future<void> saveCryptocurrencies(List<LocalDatabaseCrypto> cryptocurrencies) {
     return dao.saveCryptocurrencies(cryptocurrencies.map((item) => item.toEntity()).toList());
   }

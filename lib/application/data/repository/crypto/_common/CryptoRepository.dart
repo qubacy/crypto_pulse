@@ -12,6 +12,6 @@ abstract class CryptoRepository {
   late final Stream<List<DataCrypto>> dataCryptoStream;
 
   void loadCryptocurrencies(int count);
-  void addToFavorites(DataCrypto crypto);
-  void removeFromFavorites(DataCrypto crypto);
+  void addToFavorites(String cryptoToken);
+  void removeFromFavorites(String cryptoToken);
 }
