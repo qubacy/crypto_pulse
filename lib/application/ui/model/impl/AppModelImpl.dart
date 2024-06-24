@@ -7,7 +7,8 @@ import 'package:crypto_pulse/application/ui/model/_common/AppModel.dart';
 class AppModelImpl extends AppModel {
   static const int CHUNK_SIZE = 20;
 
-  int _chunkCount = 1;
+  int _chunkCount = 0;
+  int get chunkCount => _chunkCount;
 
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
   
@@ -46,6 +47,7 @@ class AppModelImpl extends AppModel {
   
   @override
   void toggleFavoriteCrypto(CryptoPresentation crypto) {
-    cryptoRepository.removeFromFavorites(crypto.token);
+    if (crypto.isFavorite) cryptoRepository.removeFromFavorites(crypto.token);
+    else cryptoRepository.addToFavorites(crypto.token);
   }
 }
