@@ -4,26 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../_common/presentation/CryptoPresentation.dart';
 
-class CryptocurrencyList extends StatefulWidget {
-  final EdgeInsets padding;
-
-  const CryptocurrencyList({
-    this.padding = const EdgeInsets.all(0)
-  });
-
-  @override
-  _CryptocurrencyListState createState() => _CryptocurrencyListState();
-}
-
-class _CryptocurrencyListState extends State<CryptocurrencyList> {
+class CryptocurrencyList extends StatelessWidget {
   static const int END_SCROLL_DELTA = 100;
 
   CryptocurrenciesModel? _model;
   List<CryptoPresentation> _lastItems = [];
 
   final ScrollController _scrollController = ScrollController();
+  final EdgeInsets padding;
 
-  _CryptocurrencyListState() {
+  CryptocurrencyList({super.key, this.padding = const EdgeInsets.all(0)}) {
     _scrollController.addListener(_onScroll);
   }
 
@@ -41,12 +31,12 @@ class _CryptocurrencyListState extends State<CryptocurrencyList> {
             return  ListView.separated(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              padding: widget.padding,
+              padding: padding,
               itemBuilder: (context, index) {
                 final item = _lastItems[index];
 
                 return CryptocurrencyListItem(
-                  cryptocurrency: item,
+                  cryptoPresentation: item,
                   onFavoriteToggled: _onFavoriteToggled 
                 );
               },
