@@ -6,9 +6,11 @@ import 'package:crypto_pulse/application/data/repository/_common/source/http/hea
 import 'package:crypto_pulse/application/data/repository/_common/source/http/util/HttpDataSourceUtil.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/api/_common/response/body/GetCryptocurrenciesResponse.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 import '../_common/RemoteCryptoHttpRestDataSourceApi.dart';
 
+@Injectable(as: RemoteCryptoHttpRestDataSourceApi)
 class RemoteCryptoHttpRestDataSourceApiImpl implements RemoteCryptoHttpRestDataSourceApi {
   @override
   http.Client httpClient;

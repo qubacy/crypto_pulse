@@ -1,7 +1,9 @@
 import 'package:crypto_pulse/application/data/repository/token/_common/source/local/environment/_common/LocalTokenEnvironmentDataSource.dart';
+import 'package:injectable/injectable.dart';
 
 import '../_common/AuthorizationHttpHeaderInterceptor.dart';
 
+@Injectable(as: AuthorizationHttpHeaderInterceptor)
 class AuthorizationHttpHeaderInterceptorImpl implements AuthorizationHttpHeaderInterceptor {
   final LocalTokenEnvironmentDataSource localTokenEnvironmentDataSource;
 

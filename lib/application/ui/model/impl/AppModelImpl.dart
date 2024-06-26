@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/CryptoRepository.dart';
 import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
 import 'package:crypto_pulse/application/ui/model/_common/AppModel.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: AppModel)
 class AppModelImpl extends AppModel {
   static const int CHUNK_SIZE = 20;
 

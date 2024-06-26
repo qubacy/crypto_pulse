@@ -4,8 +4,10 @@ import 'package:crypto_pulse/application/data/repository/crypto/_common/source/h
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/LocalCryptoDatabaseDataSource.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/CryptocurrencyUpdater.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+@Singleton(as: CryptoRepository)
 class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCallback {
   @override
   late Stream<List<DataCrypto>> dataCryptoStream;

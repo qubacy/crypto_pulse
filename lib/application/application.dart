@@ -1,4 +1,5 @@
 import 'package:crypto_pulse/application/ui/Host.dart';
+import 'package:crypto_pulse/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,11 +11,11 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AppModel>(
-      create: (context) => AppModel(),
+      create: (context) => getIt.get<AppModel>(),
       child: MaterialApp(
         title: 'Crypto Pulse',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(0x006974)),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x006974)),
           useMaterial3: true,
         ),
         home: const Host(),

@@ -1,8 +1,10 @@
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/dao/_common/LocalCryptoDatabaseDataSourceDao.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/model/LocalDatabaseCrypto.dart';
+import 'package:injectable/injectable.dart';
 
 import '../_common/LocalCryptoDatabaseDataSource.dart';
 
+@Injectable(as: LocalCryptoDatabaseDataSource)
 class LocalCryptoDatabaseDataSourceImpl implements LocalCryptoDatabaseDataSource {
   @override
   LocalCryptoDatabaseDataSourceDao dao;

@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 import '../_common/LocalCryptoDatabaseDataSourceDao.dart';
 import '../_common/entity/CryptoEntity.dart';
 
+@Injectable(as: LocalCryptoDatabaseDataSourceDao)
 class LocalCryptoDatabaseDataSourceDaoImpl implements LocalCryptoDatabaseDataSourceDao {
   @override
   Database database;
