@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../_common/presentation/CryptoPresentation.dart';
 
-class CryptocurrencyList extends StatelessWidget {
+class CryptocurrencyList extends StatelessWidget implements CryptocurrencyListItemCallback {
   static const int END_SCROLL_DELTA = 100;
 
   CryptocurrenciesModel? _model;
@@ -37,7 +37,7 @@ class CryptocurrencyList extends StatelessWidget {
 
                 return CryptocurrencyListItem(
                   cryptoPresentation: item,
-                  onFavoriteToggled: _onFavoriteToggled 
+                  callback: this, 
                 );
               },
               separatorBuilder: (context, index) {
@@ -52,10 +52,6 @@ class CryptocurrencyList extends StatelessWidget {
     );
   }
 
-  void _onFavoriteToggled(CryptoPresentation crypto) {
-    _model?.toggleFavoriteCrypto(crypto);
-  }
-
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final curScroll = _scrollController.position.pixels;
@@ -66,5 +62,10 @@ class CryptocurrencyList extends StatelessWidget {
 
   void _onEndReached() {
     _model?.getNextChunk();
+  }
+  
+  @override
+  void onFavoriteToggled(CryptoPresentation cryptoPresentation) {
+    _model?.toggleFavoriteCrypto(cryptoPresentation);
   }
 }

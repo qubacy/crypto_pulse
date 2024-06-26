@@ -1,20 +1,23 @@
 import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
 import 'package:flutter/material.dart';
 
+abstract class CryptocurrencyListItemCallback {
+  void onFavoriteToggled(CryptoPresentation cryptoPresentation);
+}
+
 class CryptocurrencyListItem extends StatelessWidget {
   static Key getFavoriteIconKey(String token) {
     return Key("favorite_icon_button_$token");
   }
 
   final CryptoPresentation cryptoPresentation;
-
-  final Function _onFavoriteToggled;
+  final CryptocurrencyListItemCallback callback;
 
   const CryptocurrencyListItem({
     super.key,
     required this.cryptoPresentation,
-    required onFavoriteToggled
-  }) : _onFavoriteToggled = onFavoriteToggled;
+    required this.callback
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class CryptocurrencyListItem extends StatelessWidget {
       leading: IconButton(
         key: getFavoriteIconKey(cryptoPresentation.token),
         icon: cryptoPresentation.isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
-        onPressed: () => _onFavoriteToggled(cryptoPresentation),
+        onPressed: () => callback.onFavoriteToggled(cryptoPresentation),
       ),
       title: Text(cryptoPresentation.name),
       trailing: Text(cryptoPresentation.price, style: textTheme.bodyLarge,),

@@ -25,120 +25,122 @@ Widget buildList(MockCryptocurrenciesModel model) {
 
 @GenerateMocks([CryptocurrenciesModel])
 void main() {
-  testWidgets('CryptocurrencyList displays items from a model stream', (tester) async {
-    const CryptoPresentation cryptoPresentation = CryptoPresentation(
-      token: 'test token', 
-      name: 'test name', 
-      price: 'test price', 
-      capitalization: 1, 
-      isFavorite: false
-    );
-    const List<CryptoPresentation> cryptoPresentationList = [cryptoPresentation];
-
-    final StreamController<List<CryptoPresentation>> cryptoPresentationListController = StreamController();
-
-    final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
-
-    when(cryptocurrenciesModelMock.getAllCryptoPresentations())
-      .thenAnswer((_) => cryptoPresentationListController.stream);
-
-    final Widget widget = buildList(cryptocurrenciesModelMock);
-
-    await tester.pumpWidget(widget);
-
-    final listItemFinder = find.byElementType(CryptocurrencyListItem);
-
-    expect(listItemFinder, findsNothing);
-
-    cryptoPresentationListController.add(cryptoPresentationList);
-
-    await tester.pumpAndSettle();
-
-    for (CryptoPresentation cryptoPresentation in cryptoPresentationList) {
-      final itemNameFinder = find.text(cryptoPresentation.name);
-      final itemPriceFinder = find.text(cryptoPresentation.price);
-      final itemFavoriteIconFinder = find.byElementPredicate((elem) {
-        final iconFinder = find.byIcon(cryptoPresentation.isFavorite ? Icons.favorite : Icons.favorite_border);
-        final keyFinder = find.byKey(CryptocurrencyListItem.getFavoriteIconKey(cryptoPresentation.token));
-
-        bool iconFinderSuccess = iconFinder.evaluate().contains(elem);
-        bool keyFinderSuccess = keyFinder.evaluate().contains(elem);
-
-        return iconFinderSuccess && keyFinderSuccess;
-      });
-
-      expect(itemNameFinder, findsOneWidget);
-    }
-  });
-
-  testWidgets('Clicking on Favorite icon leads to interaction with a model', (tester) async {
-    const CryptoPresentation expectedCryptoPresentationToToggleFavorite = CryptoPresentation(
-      token: 'test token', 
-      name: 'test name', 
-      price: 'test price', 
-      capitalization: 1, 
-      isFavorite: false
-    );
-    const List<CryptoPresentation> cryptoPresentationList = [expectedCryptoPresentationToToggleFavorite];
-    final Stream<List<CryptoPresentation>> getAllCryptoPresentationStream = Stream.value(cryptoPresentationList);
-
-    late CryptoPresentation gottenCryptoPresentationToToggleFavorite;  
-
-    final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
-
-    when(cryptocurrenciesModelMock.getAllCryptoPresentations()).thenAnswer((_) => getAllCryptoPresentationStream);
-    when(cryptocurrenciesModelMock.toggleFavoriteCrypto(any))
-      .thenAnswer((invocation) {
-        gottenCryptoPresentationToToggleFavorite = invocation.positionalArguments.first;
-      });
-
-    final Widget widget = buildList(cryptocurrenciesModelMock);
-
-    await tester.pumpWidget(widget);
-
-    final itemListFinder = find.byType(CryptocurrencyListItem);
-
-    await tester.pumpAndSettle();
-
-    expect(itemListFinder, findsExactly(cryptoPresentationList.length));
-
-    final itemFavoriteIconKey = CryptocurrencyListItem.getFavoriteIconKey(
-      expectedCryptoPresentationToToggleFavorite.token);
-    final itemListFavoriteIconFinder = find.byKey(itemFavoriteIconKey);
-    
-    await tester.tap(itemListFavoriteIconFinder);
-    await tester.pumpAndSettle();
-
-    verify(cryptocurrenciesModelMock.toggleFavoriteCrypto(any));
-
-    expect(gottenCryptoPresentationToToggleFavorite, expectedCryptoPresentationToToggleFavorite);
-  });
-
-  testWidgets('Scrolling to the end leads to requesting a new chunk', (tester) async {
-    List<CryptoPresentation> cryptoPresentationList = List.generate(20, (index) {
-      return CryptoPresentation(
-        token: 'test token $index', 
-        name: 'test name $index', 
-        price: 'test price $index', 
-        capitalization: 0, 
+  group('Cryptocurrency List tests', () {
+    testWidgets('Items are displayed using a model stream', (tester) async {
+      const CryptoPresentation cryptoPresentation = CryptoPresentation(
+        token: 'test token', 
+        name: 'test name', 
+        price: 'test price', 
+        capitalization: 1, 
         isFavorite: false
       );
+      const List<CryptoPresentation> cryptoPresentationList = [cryptoPresentation];
+
+      final StreamController<List<CryptoPresentation>> cryptoPresentationListController = StreamController();
+
+      final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
+
+      when(cryptocurrenciesModelMock.getAllCryptoPresentations())
+        .thenAnswer((_) => cryptoPresentationListController.stream);
+
+      final Widget widget = buildList(cryptocurrenciesModelMock);
+
+      await tester.pumpWidget(widget);
+
+      final listItemFinder = find.byElementType(CryptocurrencyListItem);
+
+      expect(listItemFinder, findsNothing);
+
+      cryptoPresentationListController.add(cryptoPresentationList);
+
+      await tester.pumpAndSettle();
+
+      for (CryptoPresentation cryptoPresentation in cryptoPresentationList) {
+        final itemNameFinder = find.text(cryptoPresentation.name);
+        final itemPriceFinder = find.text(cryptoPresentation.price);
+        final itemFavoriteIconFinder = find.byElementPredicate((elem) {
+          final iconFinder = find.byIcon(cryptoPresentation.isFavorite ? Icons.favorite : Icons.favorite_border);
+          final keyFinder = find.byKey(CryptocurrencyListItem.getFavoriteIconKey(cryptoPresentation.token));
+
+          bool iconFinderSuccess = iconFinder.evaluate().contains(elem);
+          bool keyFinderSuccess = keyFinder.evaluate().contains(elem);
+
+          return iconFinderSuccess && keyFinderSuccess;
+        });
+
+        expect(itemNameFinder, findsOneWidget);
+      }
     });
-    final Stream<List<CryptoPresentation>> getAllCryptoPresentationStream = Stream.value(cryptoPresentationList);
 
-    final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
+    testWidgets('Clicking on Favorite icon leads to interaction with a model', (tester) async {
+      const CryptoPresentation expectedCryptoPresentationToToggleFavorite = CryptoPresentation(
+        token: 'test token', 
+        name: 'test name', 
+        price: 'test price', 
+        capitalization: 1, 
+        isFavorite: false
+      );
+      const List<CryptoPresentation> cryptoPresentationList = [expectedCryptoPresentationToToggleFavorite];
+      final Stream<List<CryptoPresentation>> getAllCryptoPresentationStream = Stream.value(cryptoPresentationList);
 
-    when(cryptocurrenciesModelMock.getAllCryptoPresentations()).thenAnswer((_) => getAllCryptoPresentationStream);
+      late CryptoPresentation gottenCryptoPresentationToToggleFavorite;  
 
-    final Widget widget = buildList(cryptocurrenciesModelMock);
+      final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
 
-    await tester.pumpWidget(widget);
-    await tester.pumpAndSettle();
+      when(cryptocurrenciesModelMock.getAllCryptoPresentations()).thenAnswer((_) => getAllCryptoPresentationStream);
+      when(cryptocurrenciesModelMock.toggleFavoriteCrypto(any))
+        .thenAnswer((invocation) {
+          gottenCryptoPresentationToToggleFavorite = invocation.positionalArguments.first;
+        });
 
-    final lastListItemNameFinder = find.text(cryptoPresentationList.last.name);
+      final Widget widget = buildList(cryptocurrenciesModelMock);
 
-    await tester.scrollUntilVisible(lastListItemNameFinder, 60);
+      await tester.pumpWidget(widget);
 
-    verify(cryptocurrenciesModelMock.getNextChunk());
+      final itemListFinder = find.byType(CryptocurrencyListItem);
+
+      await tester.pumpAndSettle();
+
+      expect(itemListFinder, findsExactly(cryptoPresentationList.length));
+
+      final itemFavoriteIconKey = CryptocurrencyListItem.getFavoriteIconKey(
+        expectedCryptoPresentationToToggleFavorite.token);
+      final itemListFavoriteIconFinder = find.byKey(itemFavoriteIconKey);
+      
+      await tester.tap(itemListFavoriteIconFinder);
+      await tester.pumpAndSettle();
+
+      verify(cryptocurrenciesModelMock.toggleFavoriteCrypto(any));
+
+      expect(gottenCryptoPresentationToToggleFavorite, expectedCryptoPresentationToToggleFavorite);
+    });
+
+    testWidgets('Scrolling to the end leads to requesting a new chunk', (tester) async {
+      List<CryptoPresentation> cryptoPresentationList = List.generate(20, (index) {
+        return CryptoPresentation(
+          token: 'test token $index', 
+          name: 'test name $index', 
+          price: 'test price $index', 
+          capitalization: 0, 
+          isFavorite: false
+        );
+      });
+      final Stream<List<CryptoPresentation>> getAllCryptoPresentationStream = Stream.value(cryptoPresentationList);
+
+      final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
+
+      when(cryptocurrenciesModelMock.getAllCryptoPresentations()).thenAnswer((_) => getAllCryptoPresentationStream);
+
+      final Widget widget = buildList(cryptocurrenciesModelMock);
+
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+
+      final lastListItemNameFinder = find.text(cryptoPresentationList.last.name);
+
+      await tester.scrollUntilVisible(lastListItemNameFinder, 60);
+
+      verify(cryptocurrenciesModelMock.getNextChunk());
+    });
   });
 }
