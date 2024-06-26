@@ -8,7 +8,6 @@ class CryptocurrencyList extends StatelessWidget implements CryptocurrencyListIt
   static const int END_SCROLL_DELTA = 100;
 
   CryptocurrenciesModel? _model;
-  List<CryptoPresentation> _lastItems = [];
 
   final ScrollController _scrollController = ScrollController();
   final EdgeInsets padding;
@@ -26,14 +25,14 @@ class CryptocurrencyList extends StatelessWidget implements CryptocurrencyListIt
         return StreamBuilder(
           stream: model.getAllCryptoPresentations(),
           builder: (context, listSnapshot) {
-            _lastItems = listSnapshot.data ?? [];
+            final lastItems = listSnapshot.data ?? [];
 
             return  ListView.separated(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               padding: padding,
               itemBuilder: (context, index) {
-                final item = _lastItems[index];
+                final item = lastItems[index];
 
                 return CryptocurrencyListItem(
                   cryptoPresentation: item,
@@ -41,9 +40,9 @@ class CryptocurrencyList extends StatelessWidget implements CryptocurrencyListIt
                 );
               },
               separatorBuilder: (context, index) {
-                return Divider();
+                return const Divider();
               },
-              itemCount: _lastItems.length,
+              itemCount: lastItems.length,
               controller: _scrollController,
             );
           }

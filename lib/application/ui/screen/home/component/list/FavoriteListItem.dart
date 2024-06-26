@@ -4,7 +4,7 @@ class FavoriteListItem extends StatelessWidget {
   final String name;
   final String price;
 
-  FavoriteListItem({super.key, required this.name, required this.price});
+  const FavoriteListItem({super.key, required this.name, required this.price});
 
   @override
   Widget build(BuildContext context) {

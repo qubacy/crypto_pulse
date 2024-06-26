@@ -7,12 +7,6 @@ import 'package:mockito/mockito.dart';
 
 import 'CryptocurrencyListItemTest.mocks.dart';
 
-class Flag {
-  bool? flag;
-
-  Flag(flag) : this.flag = flag;
-}
-
 Widget buildWidget(CryptoPresentation cryptoPresentation, CryptocurrencyListItemCallback callback) {
   return MaterialApp(
     home: Scaffold(
