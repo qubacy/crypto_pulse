@@ -4,7 +4,9 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: HttpContext)
 class HttpContextImpl extends HttpContext {
-  HttpContextImpl({DotEnv? dotEnv}) {
-    baseUri = (dotEnv ?? DotEnv()).env[HttpContext.BASE_URI_ENV_PROP_NAME]!;
+  HttpContextImpl({required DotEnv dotEnv}) {
+    print('HttpContextImpl() begin');
+
+    baseUri = dotEnv.env[HttpContext.BASE_URI_ENV_PROP_NAME]!;
   }
 }

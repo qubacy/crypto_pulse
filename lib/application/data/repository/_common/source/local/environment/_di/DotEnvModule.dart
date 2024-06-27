@@ -1,4 +1,3 @@
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 
@@ -6,8 +5,12 @@ import 'package:injectable/injectable.dart';
 abstract class DotEnvModule {
   @preResolve
   Future<DotEnv> dotEnv() async {
-    await DotEnv().load();
+    final dotEnv = DotEnv();
 
-    return DotEnv();
+    await dotEnv.load();
+
+    print("dotEnv(): after");
+
+    return dotEnv;
   }
 }

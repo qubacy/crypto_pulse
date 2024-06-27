@@ -7,8 +7,6 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: AppModel)
 class AppModelImpl extends AppModel {
-  static const int CHUNK_SIZE = 20;
-
   int _chunkCount = 0;
   int get chunkCount => _chunkCount;
 
@@ -39,7 +37,7 @@ class AppModelImpl extends AppModel {
   void getNextChunk() {
     ++_chunkCount;
 
-    cryptoRepository.loadCryptocurrencies(_chunkCount * CHUNK_SIZE);
+    cryptoRepository.loadCryptocurrencies(_chunkCount * AppModel.CHUNK_SIZE);
   }
   
   @override
