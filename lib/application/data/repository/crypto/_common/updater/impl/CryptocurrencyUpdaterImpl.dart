@@ -3,6 +3,8 @@ import 'dart:isolate';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/RemoteCryptoHttpRestDataSource.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/CryptocurrencyUpdater.dart';
+import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_di/CryptocurrencyUpdaterGraph.dart';
+import 'package:crypto_pulse/di/di.dart';
 import 'package:injectable/injectable.dart';
 
 class IntWrapper {
@@ -38,8 +40,7 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   Future<void> _initIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
-    // todo: fix (remoteCryptoHttpRestDataSource is unsendable):
-    _isolate = await Isolate.spawn(_update, [receivePort.sendPort, remoteCryptoHttpRestDataSource]);
+    _isolate = await Isolate.spawn(_update, receivePort.sendPort);
 
     _receiveBroadcastStream = receivePort.asBroadcastStream();
     _sendPort = await _receiveBroadcastStream!.first;
@@ -68,11 +69,12 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
     _isolate = null;
   }
   
-  void _update(List<dynamic> args) async {
+  static void _update(SendPort sendPort) async {
+    await configureCryptocurrencyUpdaterDependecies(); // todo: DELETE!
+
     ReceivePort receivePort = ReceivePort();
 
-    SendPort sendPort = args[0];
-    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = args[1];
+    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = getIt.get<RemoteCryptoHttpRestDataSource>();
 
     sendPort.send(receivePort.sendPort);
 
