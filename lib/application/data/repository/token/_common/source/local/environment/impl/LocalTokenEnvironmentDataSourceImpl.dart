@@ -5,10 +5,12 @@ import '../_common/LocalTokenEnvironmentDataSource.dart';
 
 @Injectable(as: LocalTokenEnvironmentDataSource)
 class LocalTokenEnvironmentDataSourceImpl extends LocalTokenEnvironmentDataSource {
-  LocalTokenEnvironmentDataSourceImpl();
+  LocalTokenEnvironmentDataSourceImpl({required DotEnv dotEnv}) {
+    super.dotEnv = dotEnv;
+  }
 
   @override
   Future<String> loadToken() {
-    return Future.value(DotEnv().get(LocalTokenEnvironmentDataSource.TOKEN_ENV_PROP_NAME));
+    return Future.value(dotEnv.get(LocalTokenEnvironmentDataSource.TOKEN_ENV_PROP_NAME));
   }
 }

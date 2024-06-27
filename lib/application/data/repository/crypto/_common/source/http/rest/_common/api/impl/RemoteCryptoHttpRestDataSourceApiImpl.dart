@@ -28,7 +28,7 @@ class RemoteCryptoHttpRestDataSourceApiImpl implements RemoteCryptoHttpRestDataS
   @override
   Future<GetCryptocurrenciesResponse> getCryptocurrencies(int count) async {
     final uri = HttpDataSourceUtil.getFullUri(httpContext, "/v1/cryptocurrency/listings/latest");
-    final headers = await HttpDataSourceUtil.applyHeaderInterceptors(headerInterceptors: interceptors);
+    final headers = await HttpDataSourceUtil.applyHeaderInterceptors(headers: {}, headerInterceptors: interceptors);
     final response = await httpClient.get(uri, headers: headers);
     final responseBodyJson = jsonDecode(response.body);
 

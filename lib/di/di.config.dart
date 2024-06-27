@@ -86,8 +86,8 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i5.Client>(() => httpClientModule.httpClient());
     gh.factory<_i6.HttpContext>(
         () => _i7.HttpContextImpl(dotEnv: gh<_i4.DotEnv>()));
-    gh.factory<_i8.LocalTokenEnvironmentDataSource>(
-        () => _i9.LocalTokenEnvironmentDataSourceImpl());
+    gh.factory<_i8.LocalTokenEnvironmentDataSource>(() =>
+        _i9.LocalTokenEnvironmentDataSourceImpl(dotEnv: gh<_i4.DotEnv>()));
     gh.factory<_i10.AuthorizationHttpHeaderInterceptor>(() =>
         _i11.AuthorizationHttpHeaderInterceptorImpl(
             localTokenEnvironmentDataSource:

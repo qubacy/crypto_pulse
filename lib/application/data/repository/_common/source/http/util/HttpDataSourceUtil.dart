@@ -8,7 +8,7 @@ class HttpDataSourceUtil {
   }
 
   static Future<Map<String, String>> applyHeaderInterceptors({
-    Map<String, String> headers = const {},
+    required Map<String, String> headers,
     required List<HttpHeaderInterceptor> headerInterceptors
   }) async {
     for (HttpHeaderInterceptor headerInterceptor in headerInterceptors) {

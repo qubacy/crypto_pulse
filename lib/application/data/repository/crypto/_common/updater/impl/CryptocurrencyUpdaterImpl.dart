@@ -38,6 +38,7 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   Future<void> _initIsolate() async {
     ReceivePort receivePort = ReceivePort();
 
+    // todo: fix (remoteCryptoHttpRestDataSource is unsendable):
     _isolate = await Isolate.spawn(_update, [receivePort.sendPort, remoteCryptoHttpRestDataSource]);
 
     _receiveBroadcastStream = receivePort.asBroadcastStream();
@@ -93,7 +94,7 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
     }
   }
 
-  Future<void> _startListeningForMessagesInIsolate(
+  static Future<void> _startListeningForMessagesInIsolate(
     ReceivePort receivePort, 
     IntWrapper cryptoCount
   ) async {

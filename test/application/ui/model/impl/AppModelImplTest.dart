@@ -104,7 +104,7 @@ void main() {
 
       appModelImpl.getNextChunk();
 
-      final int gottenChunkCount = appModelImpl.chunkCount;
+      final int gottenChunkCount = appModelImpl.chunkIndex;
 
       verify(cryptoRepositoryMock.loadCryptocurrencies(any));
 

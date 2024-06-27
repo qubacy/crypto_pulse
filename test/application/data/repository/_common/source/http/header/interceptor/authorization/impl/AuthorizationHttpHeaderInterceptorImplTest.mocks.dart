@@ -3,12 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:crypto_pulse/application/data/repository/token/_common/source/local/environment/_common/LocalTokenEnvironmentDataSource.dart'
-    as _i2;
+    as _i3;
+import 'package:flutter_dotenv/flutter_dotenv.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i4;
+import 'package:mockito/src/dummies.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,27 +24,55 @@ import 'package:mockito/src/dummies.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeDotEnv_0 extends _i1.SmartFake implements _i2.DotEnv {
+  _FakeDotEnv_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [LocalTokenEnvironmentDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalTokenEnvironmentDataSource extends _i1.Mock
-    implements _i2.LocalTokenEnvironmentDataSource {
+    implements _i3.LocalTokenEnvironmentDataSource {
   MockLocalTokenEnvironmentDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<String> loadToken() => (super.noSuchMethod(
+  _i2.DotEnv get dotEnv => (super.noSuchMethod(
+        Invocation.getter(#dotEnv),
+        returnValue: _FakeDotEnv_0(
+          this,
+          Invocation.getter(#dotEnv),
+        ),
+      ) as _i2.DotEnv);
+
+  @override
+  set dotEnv(_i2.DotEnv? _dotEnv) => super.noSuchMethod(
+        Invocation.setter(
+          #dotEnv,
+          _dotEnv,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i4.Future<String> loadToken() => (super.noSuchMethod(
         Invocation.method(
           #loadToken,
           [],
         ),
-        returnValue: _i3.Future<String>.value(_i4.dummyValue<String>(
+        returnValue: _i4.Future<String>.value(_i5.dummyValue<String>(
           this,
           Invocation.method(
             #loadToken,
             [],
           ),
         )),
-      ) as _i3.Future<String>);
+      ) as _i4.Future<String>);
 }

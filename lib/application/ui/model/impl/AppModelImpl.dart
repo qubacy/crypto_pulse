@@ -7,8 +7,8 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: AppModel)
 class AppModelImpl extends AppModel {
-  int _chunkCount = 0;
-  int get chunkCount => _chunkCount;
+  int _chunkIndex = 1;
+  int get chunkIndex => _chunkIndex;
 
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
   
@@ -21,6 +21,8 @@ class AppModelImpl extends AppModel {
 
   @override
   Stream<List<CryptoPresentation>> getAllCryptoPresentations() {
+    cryptoRepository.loadCryptocurrencies(_chunkIndex * AppModel.CHUNK_SIZE);
+
     return _cryptoPresentationStream;
   }
 
@@ -35,9 +37,9 @@ class AppModelImpl extends AppModel {
 
   @override
   void getNextChunk() {
-    ++_chunkCount;
+    ++_chunkIndex;
 
-    cryptoRepository.loadCryptocurrencies(_chunkCount * AppModel.CHUNK_SIZE);
+    cryptoRepository.loadCryptocurrencies(_chunkIndex * AppModel.CHUNK_SIZE);
   }
   
   @override

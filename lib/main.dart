@@ -7,7 +7,7 @@ import 'application/Application.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  configureDependecies();
+  await configureDependecies();
 
   runApp(const Application());
 }
