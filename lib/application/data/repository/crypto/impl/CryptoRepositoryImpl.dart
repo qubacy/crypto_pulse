@@ -7,7 +7,7 @@ import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-@Singleton(as: CryptoRepository)
+@LazySingleton(as: CryptoRepository)
 class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCallback {
   @override
   late Stream<List<DataCrypto>> dataCryptoStream;

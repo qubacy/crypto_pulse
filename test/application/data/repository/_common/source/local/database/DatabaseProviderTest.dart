@@ -1,4 +1,4 @@
-import 'package:crypto_pulse/application/data/repository/_common/source/local/database/DatabaseProvider.dart';
+import 'package:crypto_pulse/application/data/repository/_common/source/local/database/provider/DatabaseProvider.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/dao/_common/entity/CryptoEntity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart';

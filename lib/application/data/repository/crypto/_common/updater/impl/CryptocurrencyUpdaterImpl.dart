@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/RemoteCryptoHttpRestDataSource.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/CryptocurrencyUpdater.dart';
+import 'package:injectable/injectable.dart';
 
 class IntWrapper {
   int _value;
@@ -12,6 +13,7 @@ class IntWrapper {
   IntWrapper({int value = 0}) : _value = value;
 }
 
+@Injectable(as: CryptocurrencyUpdater)
 class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource;
 
