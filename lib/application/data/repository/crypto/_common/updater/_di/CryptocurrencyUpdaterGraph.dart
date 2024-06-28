@@ -30,16 +30,29 @@ Future<void> configureCryptocurrencyUpdaterDependecies() async {
 
     return HttpContextImpl(dotEnv: dotEnv);
   });
-  cryptocurrencyUpdaterGetIt.registerFactory<LocalTokenEnvironmentDataSource>(() => LocalTokenEnvironmentDataSourceImpl(dotEnv: cryptocurrencyUpdaterGetIt.get()));
-  cryptocurrencyUpdaterGetIt.registerFactory<AuthorizationHttpHeaderInterceptor>(
-    () => AuthorizationHttpHeaderInterceptorImpl(localTokenEnvironmentDataSource: cryptocurrencyUpdaterGetIt.get())
-  );
-  cryptocurrencyUpdaterGetIt.registerFactory<RemoteCryptoHttpRestDataSourceApi>(
-    () => RemoteCryptoHttpRestDataSourceApiImpl(
+  cryptocurrencyUpdaterGetIt.registerFactoryAsync<LocalTokenEnvironmentDataSource>(() async {
+    final dotEnv = await cryptocurrencyUpdaterGetIt.getAsync<DotEnv>();
+
+    return LocalTokenEnvironmentDataSourceImpl(dotEnv: dotEnv);
+  });
+  cryptocurrencyUpdaterGetIt.registerFactoryAsync<AuthorizationHttpHeaderInterceptor>(() async {
+    final localTokenEnvironmentDataSource = await cryptocurrencyUpdaterGetIt.getAsync<LocalTokenEnvironmentDataSource>();
+
+    return AuthorizationHttpHeaderInterceptorImpl(localTokenEnvironmentDataSource: localTokenEnvironmentDataSource);
+  });
+  cryptocurrencyUpdaterGetIt.registerFactoryAsync<RemoteCryptoHttpRestDataSourceApi>(() async {
+    final httpContext = await cryptocurrencyUpdaterGetIt.getAsync<HttpContext>();
+    final authorizationHttpHeaderInterceptor = await cryptocurrencyUpdaterGetIt.getAsync<AuthorizationHttpHeaderInterceptor>();
+
+    return RemoteCryptoHttpRestDataSourceApiImpl(
       httpClient: cryptocurrencyUpdaterGetIt.get(), 
-      httpContext: cryptocurrencyUpdaterGetIt.get(), 
-      authorizationHttpHeaderInterceptor: cryptocurrencyUpdaterGetIt.get()
-    )
-  );
-  cryptocurrencyUpdaterGetIt.registerFactory<RemoteCryptoHttpRestDataSource>(() => RemoteCryptoHttpRestDataSourceImpl(api: cryptocurrencyUpdaterGetIt.get()));
+      httpContext: httpContext, 
+      authorizationHttpHeaderInterceptor: authorizationHttpHeaderInterceptor
+    );
+  });
+  cryptocurrencyUpdaterGetIt.registerFactoryAsync<RemoteCryptoHttpRestDataSource>(() async {
+    final api = await cryptocurrencyUpdaterGetIt.getAsync<RemoteCryptoHttpRestDataSourceApi>();
+
+    return RemoteCryptoHttpRestDataSourceImpl(api: api);
+  });
 }

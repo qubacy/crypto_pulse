@@ -6,7 +6,8 @@ abstract class DotEnvModule {
   @preResolve
   Future<DotEnv> dotEnv() async {
     final dotEnv = DotEnv();
-
+    
+    // todo: doesnt work in Isolate:
     await dotEnv.load();
 
     print("dotEnv(): after");

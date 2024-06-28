@@ -70,11 +70,11 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   }
   
   static void _update(SendPort sendPort) async {
-    await configureCryptocurrencyUpdaterDependecies(); // todo: DELETE!
+    await configureCryptocurrencyUpdaterDependecies();
 
     ReceivePort receivePort = ReceivePort();
 
-    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = getIt.get<RemoteCryptoHttpRestDataSource>();
+    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = await getIt.getAsync<RemoteCryptoHttpRestDataSource>();
 
     sendPort.send(receivePort.sendPort);
 
