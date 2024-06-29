@@ -13,9 +13,9 @@ class LocalCryptoDatabaseDataSourceImpl implements LocalCryptoDatabaseDataSource
   
   @override
   Future<List<LocalDatabaseCrypto>> getCryptocurrencies(int count) async {
-    final cryptocurrencyEntities = await dao.getCryptocurrencies(count);
+    final cryptoEntities = await dao.getCryptocurrencies(count);
 
-    return cryptocurrencyEntities.map((entity) => LocalDatabaseCrypto.fromEntity(entity)).toList();
+    return cryptoEntities.map((entity) => LocalDatabaseCrypto.fromEntity(entity)).toList();
   }
 
   @override
@@ -25,6 +25,13 @@ class LocalCryptoDatabaseDataSourceImpl implements LocalCryptoDatabaseDataSource
     if (cryptocurrencyEntity == null) return null;
   
     return LocalDatabaseCrypto.fromEntity(cryptocurrencyEntity);
+  }
+
+  @override
+  Future<List<LocalDatabaseCrypto>> getFavorites() async {
+    final cryptoEntities = await dao.getFavorites();
+
+    return cryptoEntities.map((entity) => LocalDatabaseCrypto.fromEntity(entity)).toList();
   }
 
   @override

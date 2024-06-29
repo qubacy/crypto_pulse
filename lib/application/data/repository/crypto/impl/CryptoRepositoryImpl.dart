@@ -11,6 +11,8 @@ import 'package:rxdart/rxdart.dart';
 class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCallback {
   @override
   late Stream<List<DataCrypto>> dataCryptoStream;
+  @override
+  late Stream<List<DataCrypto>> favoriteDataCryptoStream;
 
   @override
   LocalCryptoDatabaseDataSource localCryptoDatabaseDataSource;
@@ -20,6 +22,7 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   CryptocurrencyUpdater cryptocurrencyUpdater;
 
   final BehaviorSubject<List<DataCrypto>> _cryptoStreamController = BehaviorSubject();
+  final BehaviorSubject<List<DataCrypto>> _favoriteCryptoStreamController = BehaviorSubject();
 
   CryptoRepositoryImpl({
     required this.localCryptoDatabaseDataSource, 
@@ -27,6 +30,7 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
     required this.cryptocurrencyUpdater
   }) {
     dataCryptoStream = _cryptoStreamController.stream.asBroadcastStream();
+    favoriteDataCryptoStream = _favoriteCryptoStreamController.stream.asBroadcastStream();
 
     cryptocurrencyUpdater.setCallback(this);
   }
@@ -35,6 +39,14 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   Future<void> loadCryptocurrencies(int count) async {
     await _retrieveCryptocurrencies(count);
     _startCryptocurrencyUpdater(count);
+  }
+
+  @override
+  Future<void> loadFavorites() async {
+    final localDatabaseCryptoList = await localCryptoDatabaseDataSource.getFavorites();
+    final dataCryptoList = localDatabaseCryptoList.map((element) => DataCrypto.fromLocalDatabase(element)).toList();
+
+    _favoriteCryptoStreamController.add(dataCryptoList);
   }
 
   Future<void> _retrieveCryptocurrencies(int count, {List<RemoteHttpRestCrypto>? gottenRemoteCryptocurrencies}) async {
@@ -74,13 +86,14 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   }
 
   Future<void> _changeFavoriteState(String cryptoToken, bool isFavorite) async {
-    final localDatabaseCrypto = await localCryptoDatabaseDataSource.getCryptocurrencyByToken(cryptoToken); //crypto.toLocalDatabase(newIsFavorite: isFavorite);
+    final localDatabaseCrypto = await localCryptoDatabaseDataSource.getCryptocurrencyByToken(cryptoToken);
     
     if (localDatabaseCrypto == null) throw Exception();
 
     final localDatabaseCryptoToSave = localDatabaseCrypto.copyWith(newIsFavorite: isFavorite);
 
     await localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCryptoToSave]);
+    await loadFavorites();
   }
 
   /// Strict comparison including order check;

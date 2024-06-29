@@ -34,6 +34,17 @@ class LocalCryptoDatabaseDataSourceDaoImpl implements LocalCryptoDatabaseDataSou
     
     return CryptoEntity.fromMap(rawCryptoEntity);
   }
+
+  @override
+  Future<List<CryptoEntity>> getFavorites() async {
+    final rawEntities = await database.query(
+      CryptoEntity.TABLE_NAME, 
+      where: '${CryptoEntity.IS_FAVORITE_PROP_NAME} = ?', 
+      whereArgs: [1]
+    );
+
+    return rawEntities.map((element) => CryptoEntity.fromMap(element)).toList();
+  }
   
   @override
   Future<void> saveCryptocurrencies(List<CryptoEntity> cryptocurrencies) async {

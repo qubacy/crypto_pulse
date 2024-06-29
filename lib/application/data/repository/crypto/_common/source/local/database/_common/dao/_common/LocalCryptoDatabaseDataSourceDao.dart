@@ -7,5 +7,6 @@ abstract class LocalCryptoDatabaseDataSourceDao {
 
   Future<List<CryptoEntity>> getCryptocurrencies(int count);
   Future<CryptoEntity?> getCryptocurrencyByToken(String token);
+  Future<List<CryptoEntity>> getFavorites();
   Future<void> saveCryptocurrencies(List<CryptoEntity> cryptocurrencies);
 }

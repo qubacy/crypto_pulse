@@ -10,8 +10,10 @@ abstract class CryptoRepository {
   late final CryptocurrencyUpdater cryptocurrencyUpdater;
 
   late final Stream<List<DataCrypto>> dataCryptoStream;
+  late final Stream<List<DataCrypto>> favoriteDataCryptoStream;
 
   void loadCryptocurrencies(int count);
+  Future<void> loadFavorites();
   void addToFavorites(String cryptoToken);
   void removeFromFavorites(String cryptoToken);
 }
