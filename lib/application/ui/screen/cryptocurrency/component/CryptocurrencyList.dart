@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../_common/presentation/CryptoPresentation.dart';
 
 class CryptocurrencyList extends StatelessWidget implements CryptocurrencyListItemCallback {
-  static const int END_SCROLL_DELTA = 100;
+  static const int END_SCROLL_DELTA = 5;
 
   CryptocurrenciesModel? _model;
 

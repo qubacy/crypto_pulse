@@ -26,6 +26,8 @@ class FavoriteList extends StatelessWidget {
           builder: (context, listSnapshot) {
             final lastItems = listSnapshot.data ?? [];
 
+            print('FavoriteList: lastItems.length = ${lastItems.length}');
+
             return ListView.separated(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,

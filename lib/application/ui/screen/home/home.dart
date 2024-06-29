@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 
 import '../_common/screen.dart';
 import './component/list/FavoriteList.dart';

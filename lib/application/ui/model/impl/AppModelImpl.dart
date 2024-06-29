@@ -10,13 +10,24 @@ class AppModelImpl extends AppModel {
   int _chunkIndex = 1;
   int get chunkIndex => _chunkIndex;
 
+  bool _isGettingChunk = false;
+  bool get isGettingChunk => _isGettingChunk;
+
+  int _lastChunkSize = 0;
+
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
   
   AppModelImpl(CryptoRepository cryptoRepository) {
     super.cryptoRepository = cryptoRepository;
 
     _cryptoPresentationStream = cryptoRepository.dataCryptoStream
-      .map((items) => items.map((item) => CryptoPresentation.fromDataCrypto(item)).toList());
+      .map((items) {
+        if (_isGettingChunk) _isGettingChunk = false;
+
+        _lastChunkSize = items.length;
+
+        return items.map((item) => CryptoPresentation.fromDataCrypto(item)).toList();
+      });
   }
 
   @override
@@ -28,16 +39,21 @@ class AppModelImpl extends AppModel {
 
   @override
   Stream<List<CryptoPresentation>> getFavoriteCryptoPresentations() {
-    return _cryptoPresentationStream.asyncMap((list) {
-      final favoriteList = list.where((item) => item.isFavorite).toList();
+    return _cryptoPresentationStream.map((list) {
+      print('getFavoriteCryptoPresentations(): list = ${list.map((elem) => elem.name)};');
 
-      return Future.value(favoriteList);
+      return list.where((item) => item.isFavorite).toList();
     });
   }
 
   @override
   void getNextChunk() {
+    if (_isGettingChunk || _lastChunkSize % AppModel.CHUNK_SIZE != 0) return;
+
+    _isGettingChunk = true;
     ++_chunkIndex;
+
+    print("getNextChunk(): _chunkIndex = $_chunkIndex;");
 
     cryptoRepository.loadCryptocurrencies(_chunkIndex * AppModel.CHUNK_SIZE);
   }
