@@ -109,8 +109,12 @@ extension GetItInjectableX on _i1.GetIt {
         _i20.RemoteCryptoHttpRestDataSourceImpl(
             api: gh<_i15.RemoteCryptoHttpRestDataSourceApi>()));
     gh.factory<_i21.CryptocurrencyUpdater>(() => _i22.CryptocurrencyUpdaterImpl(
-        remoteCryptoHttpRestDataSource:
-            gh<_i19.RemoteCryptoHttpRestDataSource>()));
+          remoteCryptoHttpRestDataSource:
+              gh<_i19.RemoteCryptoHttpRestDataSource>(),
+          localTokenEnvironmentDataSource:
+              gh<_i8.LocalTokenEnvironmentDataSource>(),
+          httpContext: gh<_i6.HttpContext>(),
+        ));
     gh.lazySingleton<_i23.CryptoRepository>(() => _i24.CryptoRepositoryImpl(
           localCryptoDatabaseDataSource:
               gh<_i17.LocalCryptoDatabaseDataSource>(),

@@ -3,8 +3,10 @@ import 'package:crypto_pulse/application/data/repository/_common/source/http/con
 import '../header/interceptor/_common/HttpHeaderInterceptor.dart';
 
 class HttpDataSourceUtil {
-  static Uri getFullUri(HttpContext httpContext, String path) {
-    return Uri.parse("${httpContext.baseUri}$path");
+  static Future<Uri> getFullUri(HttpContext httpContext, String path) async {
+    final baseUri = await httpContext.loadUri();
+
+    return Uri.parse("$baseUri$path");
   }
 
   static Future<Map<String, String>> applyHeaderInterceptors({

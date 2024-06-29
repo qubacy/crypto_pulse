@@ -4,8 +4,11 @@ import 'package:crypto_pulse/application/data/repository/crypto/_common/source/h
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/CryptocurrencyUpdater.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_di/CryptocurrencyUpdaterGraph.dart';
+import 'package:crypto_pulse/application/data/repository/token/_common/source/local/environment/_common/LocalTokenEnvironmentDataSource.dart';
 import 'package:crypto_pulse/di/di.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../_common/source/http/context/_common/HttpContext.dart';
 
 class IntWrapper {
   int _value;
@@ -17,9 +20,16 @@ class IntWrapper {
 
 @Injectable(as: CryptocurrencyUpdater)
 class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
-  RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource;
+  final RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource;
 
-  CryptocurrencyUpdaterImpl({required this.remoteCryptoHttpRestDataSource});
+  final LocalTokenEnvironmentDataSource localTokenEnvironmentDataSource;
+  final HttpContext httpContext;
+
+  CryptocurrencyUpdaterImpl({
+    required this.remoteCryptoHttpRestDataSource,
+    required this.localTokenEnvironmentDataSource,
+    required this.httpContext
+  });
 
   ReceivePort? _receivePort;
   Stream<dynamic>? _receiveBroadcastStream;
@@ -38,9 +48,13 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   }
 
   Future<void> _initIsolate() async {
-    ReceivePort receivePort = ReceivePort();
+    final baseUri = await httpContext.loadUri();
+    final token = await localTokenEnvironmentDataSource.loadToken();
 
-    _isolate = await Isolate.spawn(_update, receivePort.sendPort);
+    ReceivePort receivePort = ReceivePort();
+    List args = [receivePort.sendPort, baseUri, token];
+
+    _isolate = await Isolate.spawn(_update, args);
 
     _receiveBroadcastStream = receivePort.asBroadcastStream();
     _sendPort = await _receiveBroadcastStream!.first;
@@ -69,12 +83,13 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
     _isolate = null;
   }
   
-  static void _update(SendPort sendPort) async {
-    await configureCryptocurrencyUpdaterDependecies();
+  static void _update(List args) async {
+    await configureCryptocurrencyUpdaterDependecies(args[1], args[2]);
 
+    SendPort sendPort = args[0];
     ReceivePort receivePort = ReceivePort();
 
-    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = await getIt.getAsync<RemoteCryptoHttpRestDataSource>();
+    RemoteCryptoHttpRestDataSource remoteCryptoHttpRestDataSource = getIt.get<RemoteCryptoHttpRestDataSource>();
 
     sendPort.send(receivePort.sendPort);
 

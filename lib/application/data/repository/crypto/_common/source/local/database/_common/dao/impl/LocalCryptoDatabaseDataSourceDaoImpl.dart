@@ -49,7 +49,9 @@ class LocalCryptoDatabaseDataSourceDaoImpl implements LocalCryptoDatabaseDataSou
         if (selectedCryptocurrency.isEmpty) {
           await tx.insert(CryptoEntity.TABLE_NAME, cryptocurrencyMap);
         } else {
-          await tx.update(CryptoEntity.TABLE_NAME, cryptocurrencyMap);
+          final token = cryptocurrencyMap.remove(CryptoEntity.TOKEN_PROP_NAME);
+
+          await tx.update(CryptoEntity.TABLE_NAME, cryptocurrencyMap, where: '${CryptoEntity.TOKEN_PROP_NAME} = ?', whereArgs: [token]);
         }
       }
     });
