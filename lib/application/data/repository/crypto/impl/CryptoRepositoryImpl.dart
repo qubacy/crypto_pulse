@@ -9,6 +9,8 @@ import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: CryptoRepository)
 class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCallback {
+  static const TAG = "CRI";
+
   @override
   late Stream<List<DataCrypto>> dataCryptoStream;
   @override
@@ -77,11 +79,15 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
   
   @override
   Future<void> addToFavorites(String cryptoToken) async {
+    print("$TAG: addToFavorites(): entering");
+
     await _changeFavoriteState(cryptoToken, true);
   }
   
   @override
   Future<void> removeFromFavorites(String cryptoToken) async {
+    print("$TAG: removeFromFavorites(): entering");
+
     await _changeFavoriteState(cryptoToken, false);
   }
 
@@ -92,7 +98,7 @@ class CryptoRepositoryImpl implements CryptoRepository, CryptocurrencyUpdaterCal
 
     final localDatabaseCryptoToSave = localDatabaseCrypto.copyWith(newIsFavorite: isFavorite);
 
-    await localCryptoDatabaseDataSource.saveCryptocurrencies([localDatabaseCryptoToSave]);
+    await localCryptoDatabaseDataSource.updateCryptocurrency(localDatabaseCryptoToSave);
     await loadFavorites();
   }
 

@@ -8,6 +8,8 @@ import 'package:rxdart/rxdart.dart';
 
 @Injectable(as: AppModel)
 class AppModelImpl extends AppModel {
+  static const TAG = "AMI";
+
   int _chunkIndex = 1;
   int get chunkIndex => _chunkIndex;
 
@@ -73,18 +75,22 @@ class AppModelImpl extends AppModel {
     _isGettingChunk = true;
     ++_chunkIndex;
 
-    print("getNextChunk(): _chunkIndex = $_chunkIndex;");
+    print("$TAG: getNextChunk(): _chunkIndex = $_chunkIndex;");
 
     cryptoRepository.loadCryptocurrencies(_chunkIndex * AppModel.CHUNK_SIZE);
   }
   
   @override
   void removeFromFavorites(CryptoPresentation crypto) {
+    print("$TAG: removeFromFavorites(): entering");
+
     cryptoRepository.removeFromFavorites(crypto.token);
   }
   
   @override
   void toggleFavoriteCrypto(CryptoPresentation crypto) {
+    print("$TAG: toggleFavoriteCrypto(): entering");
+
     if (crypto.isFavorite) cryptoRepository.removeFromFavorites(crypto.token);
     else cryptoRepository.addToFavorites(crypto.token);
 

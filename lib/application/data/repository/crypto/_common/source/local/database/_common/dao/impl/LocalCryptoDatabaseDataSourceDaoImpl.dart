@@ -62,11 +62,31 @@ class LocalCryptoDatabaseDataSourceDaoImpl implements LocalCryptoDatabaseDataSou
         } else {
           final token = cryptocurrencyMap.remove(CryptoEntity.TOKEN_PROP_NAME);
 
-          await tx.update(CryptoEntity.TABLE_NAME, cryptocurrencyMap, where: '${CryptoEntity.TOKEN_PROP_NAME} = ?', whereArgs: [token]);
+          cryptocurrencyMap.remove(CryptoEntity.IS_FAVORITE_PROP_NAME);
+
+          await tx.update(
+            CryptoEntity.TABLE_NAME, 
+            cryptocurrencyMap, 
+            where: '${CryptoEntity.TOKEN_PROP_NAME} = ?', 
+            whereArgs: [token]
+          );
         }
       }
     });
 
     return Future.value();
+  }
+  
+  @override
+  Future<void> updateCryptocurrency(CryptoEntity cryptocurrency) async {
+    final cryptocurrencyMap = cryptocurrency.toMap();
+    final token = cryptocurrencyMap.remove(CryptoEntity.TOKEN_PROP_NAME);
+
+    await database.update(
+      CryptoEntity.TABLE_NAME, 
+      cryptocurrencyMap,
+      where: '${CryptoEntity.TOKEN_PROP_NAME} = ?', 
+      whereArgs: [token]
+    );
   }
 }

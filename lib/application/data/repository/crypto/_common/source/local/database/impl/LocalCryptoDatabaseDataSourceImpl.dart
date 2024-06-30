@@ -1,4 +1,5 @@
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/dao/_common/LocalCryptoDatabaseDataSourceDao.dart';
+import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/dao/_common/entity/CryptoEntity.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/local/database/_common/model/LocalDatabaseCrypto.dart';
 import 'package:injectable/injectable.dart';
 
@@ -37,5 +38,10 @@ class LocalCryptoDatabaseDataSourceImpl implements LocalCryptoDatabaseDataSource
   @override
   Future<void> saveCryptocurrencies(List<LocalDatabaseCrypto> cryptocurrencies) {
     return dao.saveCryptocurrencies(cryptocurrencies.map((item) => item.toEntity()).toList());
+  }
+
+  @override
+  Future<void> updateCryptocurrency(LocalDatabaseCrypto cryptocurrency) {
+    return dao.updateCryptocurrency(cryptocurrency.toEntity());
   }
 }
