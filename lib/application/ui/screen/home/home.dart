@@ -7,6 +7,7 @@ import './component/TopHint.dart';
 
 class Home extends StatelessWidget implements Screen {
   static const NAME = "Your crypto";
+  static const PATH = "/";
 
   final GlobalKey _topHintKey = GlobalKey();
   HomeContent? _homeContent;

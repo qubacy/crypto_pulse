@@ -1,4 +1,3 @@
-import 'package:crypto_pulse/application/ui/screen/_common/Screen.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/CryptocurrenciesModel.dart';
 import 'package:crypto_pulse/application/ui/screen/home/home.dart';
@@ -13,12 +12,12 @@ import 'ui/model/_common/AppModel.dart';
 
 final _routes = [
   GoRoute(
-    path: '/',
+    path: Home.PATH,
     name: Home.NAME,
     builder: (context, state) => Home(),
   ),
   GoRoute(
-    path: '/cryptocurrencies',
+    path: Cryptocurrencies.PATH,
     name: Cryptocurrencies.NAME,
     builder: (context, state) => const Cryptocurrencies()
   )
@@ -28,7 +27,7 @@ final _router = GoRouter(
   routes: [
     ShellRoute(
       builder: (context, state, child) {
-        final bottomNavigationBar = _buildNavigationBar(context);
+        final bottomNavigationBar = _buildNavigationBar(context, state.fullPath);
 
         return Scaffold(
           //appBar: _buildAppBar(bottomNavigationBar.selectedIndex, child),
@@ -41,22 +40,35 @@ final _router = GoRouter(
   ]
 );
 
-NavigationBar _buildNavigationBar(BuildContext context) {
+final navigationBarDestinations = <NavigationDestination>[
+  NavigationDestination(
+    icon: const Icon(Icons.home),
+    label: _routes[0].name!
+  ),
+  NavigationDestination(
+    icon: const SvgIcon(icon: SvgIconData('assets/images/crypto.svg')),
+    label: _routes[1].name!
+  ),
+];
+
+NavigationBar _buildNavigationBar(BuildContext context, String? routePath) {
   return NavigationBar(
-    destinations: <NavigationDestination>[
-      NavigationDestination(
-        icon: const Icon(Icons.home),
-        label: _routes[0].name!
-      ),
-      NavigationDestination(
-        icon: const SvgIcon(icon: SvgIconData('assets/images/crypto.svg')),
-        label: _routes[1].name!
-      ),
-    ],
+    selectedIndex: _getNavigationBarDestinationIndexByRoutePath(routePath),
+    destinations: navigationBarDestinations,
     onDestinationSelected: (index) {
       context.go(_routes[index].path);
     },
   );
+}
+
+int _getNavigationBarDestinationIndexByRoutePath(String? path) {
+  print("_getNavigationBarDestinationIndexByRoutePath(): name = $path");
+
+  return switch (path) {
+    Home.PATH => 0,
+    Cryptocurrencies.PATH => 1,
+    _ => throw Exception()
+  };
 }
 
 class Application extends StatelessWidget {

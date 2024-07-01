@@ -4,6 +4,7 @@ import '../_common/screen.dart';
 
 class Cryptocurrencies extends StatelessWidget implements Screen {
   static const NAME = "Cryptocurrencies";
+  static const PATH = "/cryptocurrencies";
 
   const Cryptocurrencies({super.key});
 
