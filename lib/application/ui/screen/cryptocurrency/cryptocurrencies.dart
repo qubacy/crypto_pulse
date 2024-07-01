@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import '../_common/screen.dart';
 
 class Cryptocurrencies extends StatelessWidget implements Screen {
+  static const NAME = "Cryptocurrencies";
+
   const Cryptocurrencies({super.key});
 
   @override
-  List<Widget> getActions() {
-    return <Widget>[];
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return CryptocurrencyList(
-        
-      );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppBar(
+          title: const Text(NAME),
+          actions: [],
+        ),
+        Flexible(child: CryptocurrencyList())
+      ]
+    );
   }
 }

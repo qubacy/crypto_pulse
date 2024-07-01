@@ -6,22 +6,12 @@ import './component/list/FavoriteList.dart';
 import './component/TopHint.dart';
 
 class Home extends StatelessWidget implements Screen {
+  static const NAME = "Your crypto";
+
   final GlobalKey _topHintKey = GlobalKey();
   HomeContent? _homeContent;
 
   Home({super.key});
-  
-  @override
-  List<Widget> getActions() {
-    return <Widget>[
-      IconButton(
-        onPressed: () {
-          _homeContent?.toggleAppearance();
-        },
-        icon: const Icon(Icons.info)
-      )
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +30,6 @@ class HomeContent extends StatefulWidget {
 
   @override
   State<HomeContent> createState() => _HomeContentState(topHintKey: _topHintKey);
-
-  void toggleAppearance() {
-    lastState?.toggleAppearance();
-  }
 }
 
 class _HomeContentState extends State<HomeContent> with SingleTickerProviderStateMixin {
@@ -86,18 +72,23 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        AppBar(
+          title: const Text(Home.NAME),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () => toggleAppearance(),
+              icon: const Icon(Icons.info)
+            )
+          ]
+        ),
         AnimatedContainer(
           duration: ANIMATION_DURATION,
           height: _curTopHintHeight,
           child: topHint
         ),
         Flexible(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return FavoriteList(
-                hintTextKey: _topHintKey
-              );
-            }
+          child: FavoriteList(
+            hintTextKey: _topHintKey
           )
         )
       ],
