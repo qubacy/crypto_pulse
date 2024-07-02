@@ -1,14 +1,12 @@
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';
-import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/CryptocurrenciesModel.dart';
+import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/_common/CryptocurrenciesModel.dart';
 import 'package:crypto_pulse/application/ui/screen/home/home.dart';
-import 'package:crypto_pulse/application/ui/screen/home/model/HomeModel.dart';
+import 'package:crypto_pulse/application/ui/screen/home/model/_common/HomeModel.dart';
 import 'package:crypto_pulse/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import 'ui/model/_common/AppModel.dart';
 
 final _routes = [
   GoRoute(
@@ -76,25 +74,18 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AppModel>(
-      create: (context) => getIt.get<AppModel>(),
-      child: Consumer<AppModel>(
-        builder: (context, model, child) {
-          return MultiProvider(
-            providers: [
-              ChangeNotifierProvider<HomeModel>(create: (context) => model as HomeModel),
-              ChangeNotifierProvider<CryptocurrenciesModel>(create: (context) => model as CryptocurrenciesModel)
-            ],
-            child: MaterialApp.router(
-              routerConfig: _router,
-              title: 'Crypto Pulse',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x006974)),
-                useMaterial3: true,
-              ),
-            )
-          );
-        }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<HomeModel>(create: (context) => getIt.get<HomeModel>()),
+        ChangeNotifierProvider<CryptocurrenciesModel>(create: (context) => getIt.get<CryptocurrenciesModel>())
+      ],
+      child: MaterialApp.router(
+        routerConfig: _router,
+        title: 'Crypto Pulse',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x006974)),
+          useMaterial3: true,
+        ),
       )
     );
   }

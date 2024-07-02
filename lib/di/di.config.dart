@@ -9,7 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:crypto_pulse/application/data/repository/_common/source/http/client/_di/HttpClientModule.dart'
-    as _i29;
+    as _i33;
 import 'package:crypto_pulse/application/data/repository/_common/source/http/context/_common/HttpContext.dart'
     as _i6;
 import 'package:crypto_pulse/application/data/repository/_common/source/http/context/impl/HttpContextImpl.dart'
@@ -19,9 +19,9 @@ import 'package:crypto_pulse/application/data/repository/_common/source/http/hea
 import 'package:crypto_pulse/application/data/repository/_common/source/http/header/interceptor/authorization/impl/AuthorizationHttpHeaderInterceptorImpl.dart'
     as _i11;
 import 'package:crypto_pulse/application/data/repository/_common/source/local/database/_di/DatabaseModule.dart'
-    as _i27;
+    as _i31;
 import 'package:crypto_pulse/application/data/repository/_common/source/local/environment/_di/DotEnvModule.dart'
-    as _i28;
+    as _i32;
 import 'package:crypto_pulse/application/data/repository/crypto/_common/CryptoRepository.dart'
     as _i23;
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/api/_common/RemoteCryptoHttpRestDataSourceApi.dart'
@@ -51,8 +51,16 @@ import 'package:crypto_pulse/application/data/repository/token/_common/source/lo
 import 'package:crypto_pulse/application/data/repository/token/_common/source/local/environment/impl/LocalTokenEnvironmentDataSourceImpl.dart'
     as _i9;
 import 'package:crypto_pulse/application/ui/model/_common/AppModel.dart'
-    as _i25;
+    as _i29;
 import 'package:crypto_pulse/application/ui/model/impl/AppModelImpl.dart'
+    as _i30;
+import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/_common/CryptocurrenciesModel.dart'
+    as _i27;
+import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/impl/CryptocurrenciesModelImpl.dart'
+    as _i28;
+import 'package:crypto_pulse/application/ui/screen/home/model/_common/HomeModel.dart'
+    as _i25;
+import 'package:crypto_pulse/application/ui/screen/home/model/impl/HomeModelImpl.dart'
     as _i26;
 import 'package:flutter_dotenv/flutter_dotenv.dart' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
@@ -122,14 +130,18 @@ extension GetItInjectableX on _i1.GetIt {
               gh<_i19.RemoteCryptoHttpRestDataSource>(),
           cryptocurrencyUpdater: gh<_i21.CryptocurrencyUpdater>(),
         ));
-    gh.factory<_i25.AppModel>(
-        () => _i26.AppModelImpl(gh<_i23.CryptoRepository>()));
+    gh.factory<_i25.HomeModel>(
+        () => _i26.HomeModelImpl(gh<_i23.CryptoRepository>()));
+    gh.factory<_i27.CryptocurrenciesModel>(
+        () => _i28.CryptocurrenciesModelImpl(gh<_i23.CryptoRepository>()));
+    gh.factory<_i29.AppModel>(
+        () => _i30.AppModelImpl(gh<_i23.CryptoRepository>()));
     return this;
   }
 }
 
-class _$DatabaseModule extends _i27.DatabaseModule {}
+class _$DatabaseModule extends _i31.DatabaseModule {}
 
-class _$DotEnvModule extends _i28.DotEnvModule {}
+class _$DotEnvModule extends _i32.DotEnvModule {}
 
-class _$HttpClientModule extends _i29.HttpClientModule {}
+class _$HttpClientModule extends _i33.HttpClientModule {}

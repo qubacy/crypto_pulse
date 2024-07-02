@@ -151,6 +151,24 @@ class MockCryptoRepository extends _i1.Mock implements _i5.CryptoRepository {
       );
 
   @override
+  _i6.Stream<List<_i7.DataCrypto>> get favoriteDataCryptoStream =>
+      (super.noSuchMethod(
+        Invocation.getter(#favoriteDataCryptoStream),
+        returnValue: _i6.Stream<List<_i7.DataCrypto>>.empty(),
+      ) as _i6.Stream<List<_i7.DataCrypto>>);
+
+  @override
+  set favoriteDataCryptoStream(
+          _i6.Stream<List<_i7.DataCrypto>>? _favoriteDataCryptoStream) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #favoriteDataCryptoStream,
+          _favoriteDataCryptoStream,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   void loadCryptocurrencies(int? count) => super.noSuchMethod(
         Invocation.method(
           #loadCryptocurrencies,
@@ -158,6 +176,16 @@ class MockCryptoRepository extends _i1.Mock implements _i5.CryptoRepository {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i6.Future<void> loadFavorites() => (super.noSuchMethod(
+        Invocation.method(
+          #loadFavorites,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 
   @override
   void addToFavorites(String? cryptoToken) => super.noSuchMethod(

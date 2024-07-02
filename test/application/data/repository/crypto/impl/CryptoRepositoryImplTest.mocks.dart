@@ -117,12 +117,35 @@ class MockLocalCryptoDatabaseDataSource extends _i1.Mock
       ) as _i6.Future<_i7.LocalDatabaseCrypto?>);
 
   @override
+  _i6.Future<List<_i7.LocalDatabaseCrypto>> getFavorites() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getFavorites,
+          [],
+        ),
+        returnValue: _i6.Future<List<_i7.LocalDatabaseCrypto>>.value(
+            <_i7.LocalDatabaseCrypto>[]),
+      ) as _i6.Future<List<_i7.LocalDatabaseCrypto>>);
+
+  @override
   _i6.Future<void> saveCryptocurrencies(
           List<_i7.LocalDatabaseCrypto>? cryptocurrencies) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveCryptocurrencies,
           [cryptocurrencies],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> updateCryptocurrency(
+          _i7.LocalDatabaseCrypto? cryptocurrency) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateCryptocurrency,
+          [cryptocurrency],
         ),
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),

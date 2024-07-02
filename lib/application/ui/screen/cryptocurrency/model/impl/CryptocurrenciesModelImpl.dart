@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:crypto_pulse/application/data/repository/crypto/_common/CryptoRepository.dart';
 import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
-import 'package:crypto_pulse/application/ui/model/_common/AppModel.dart';
+import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/_common/CryptocurrenciesModel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-/// DEPRECATED: the model has been splitted into 2 different ones;
-@Injectable(as: AppModel)
-class AppModelImpl extends AppModel {
-  static const TAG = "AMI";
+@Injectable(as: CryptocurrenciesModel)
+class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
+  static const TAG = 'CMI';
 
   int _chunkIndex = 1;
   int get chunkIndex => _chunkIndex;
@@ -20,19 +19,15 @@ class AppModelImpl extends AppModel {
   int _lastChunkSize = 0;
 
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
-  late Stream<List<CryptoPresentation>> _favoriteCryptoPresentationStream;
 
   final BehaviorSubject<List<CryptoPresentation>> _cryptoPresentationStreamController = 
     BehaviorSubject();
-  final BehaviorSubject<List<CryptoPresentation>> _favoriteCryptoPresentationStreamController = 
-    BehaviorSubject();
 
   late StreamSubscription _cryptoPresentationStreamSubscription;
-  late StreamSubscription _favoriteCryptoPresentationStreamSubscription;
 
   List<CryptoPresentation> _lastCryptoPresentationList = [];
-  
-  AppModelImpl(CryptoRepository cryptoRepository) {
+
+  CryptocurrenciesModelImpl(CryptoRepository cryptoRepository) {
     super.cryptoRepository = cryptoRepository;
 
     _cryptoPresentationStreamSubscription = cryptoRepository.dataCryptoStream
@@ -47,47 +42,27 @@ class AppModelImpl extends AppModel {
       .listen((data) => _cryptoPresentationStreamController.add(data));
 
     _cryptoPresentationStream = _cryptoPresentationStreamController.stream.asBroadcastStream();
-
-    _favoriteCryptoPresentationStreamSubscription = cryptoRepository.favoriteDataCryptoStream
-      .map((items) => items.map((item) => CryptoPresentation.fromDataCrypto(item)).toList())
-      .listen((data) => _favoriteCryptoPresentationStreamController.add(data));
-
-    _favoriteCryptoPresentationStream = _favoriteCryptoPresentationStreamController.stream.asBroadcastStream();
   }
 
   @override
   Stream<List<CryptoPresentation>> getAllCryptoPresentations() {
-    cryptoRepository.loadCryptocurrencies(_chunkIndex * AppModel.CHUNK_SIZE);
+    cryptoRepository.loadCryptocurrencies(_chunkIndex * CryptocurrenciesModel.CHUNK_SIZE);
 
     return _cryptoPresentationStream;
   }
 
   @override
-  Stream<List<CryptoPresentation>> getFavoriteCryptoPresentations() {
-    cryptoRepository.loadFavorites();
-
-    return _favoriteCryptoPresentationStream;
-  }
-
-  @override
   void getNextChunk() {
-    if (_isGettingChunk || _lastChunkSize % AppModel.CHUNK_SIZE != 0) return;
+    if (_isGettingChunk || _lastChunkSize % CryptocurrenciesModel.CHUNK_SIZE != 0) return;
 
     _isGettingChunk = true;
     ++_chunkIndex;
 
     print("$TAG: getNextChunk(): _chunkIndex = $_chunkIndex;");
 
-    cryptoRepository.loadCryptocurrencies(_chunkIndex * AppModel.CHUNK_SIZE);
+    cryptoRepository.loadCryptocurrencies(_chunkIndex * CryptocurrenciesModel.CHUNK_SIZE);
   }
-  
-  @override
-  void removeFromFavorites(CryptoPresentation crypto) {
-    print("$TAG: removeFromFavorites(): entering");
 
-    cryptoRepository.removeFromFavorites(crypto.token);
-  }
-  
   @override
   void toggleFavoriteCrypto(CryptoPresentation crypto) {
     print("$TAG: toggleFavoriteCrypto(): entering");

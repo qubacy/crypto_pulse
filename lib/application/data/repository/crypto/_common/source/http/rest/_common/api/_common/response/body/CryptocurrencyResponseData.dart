@@ -31,7 +31,7 @@ class CryptocurrencyResponseData {
         SYMBOL_PROP_NAME: String symbol,
         QUOTE_PROP_NAME: Map<String, dynamic> quoteJson
       } => CryptocurrencyResponseData(name: name, symbol: symbol, quote: QuoteResponseData.fromJson(quoteJson)),
-      _ => throw const FormatException()
+      _ => throw const FormatException('Unknown JSON format')
     };
   }
 
@@ -60,7 +60,7 @@ class QuoteResponseData {
       {
         USD_PROP_NAME: Map<String, dynamic> usdQuoteJson
       } => QuoteResponseData(usd: USDQuoteResponseData.fromJson(usdQuoteJson)),
-      _ => throw FormatException()
+      _ => throw const FormatException('Unknown JSON format')
     };
   }
 
@@ -93,7 +93,7 @@ class USDQuoteResponseData {
         PRICE_PROP_NAME: double price,
         MARKET_CUP_PROP_NAME: double marketCup
       } => USDQuoteResponseData(price: price, marketCap: marketCup),
-      _ => throw FormatException()
+      _ => throw const FormatException('Unknown JSON format')
     };
   }
 

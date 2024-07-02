@@ -1,6 +1,6 @@
 import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
 import 'package:crypto_pulse/application/ui/screen/home/component/list/FavoriteListItem.dart';
-import 'package:crypto_pulse/application/ui/screen/home/model/HomeModel.dart';
+import 'package:crypto_pulse/application/ui/screen/home/model/_common/HomeModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

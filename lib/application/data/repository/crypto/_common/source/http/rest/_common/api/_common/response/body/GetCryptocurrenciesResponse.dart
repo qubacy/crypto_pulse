@@ -21,7 +21,7 @@ class GetCryptocurrenciesResponse {
   }
 
   factory GetCryptocurrenciesResponse.fromJson(Map<String, dynamic> json) {
-    if (!json.containsKey(DATA_PROP_NAME)) throw FormatException();
+    if (!json.containsKey(DATA_PROP_NAME)) throw const FormatException('Unknown JSON format');
 
     final cryptocurrencyDataJsonArray = json[DATA_PROP_NAME] as List;
     final List<CryptocurrencyResponseData> dataList = cryptocurrencyDataJsonArray
