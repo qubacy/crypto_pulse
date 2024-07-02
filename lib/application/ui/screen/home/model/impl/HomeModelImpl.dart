@@ -10,6 +10,8 @@ import 'package:rxdart/rxdart.dart';
 class HomeModelImpl extends HomeModel {
   static const TAG = 'HMI';
 
+  bool _isDisposed = false;
+
   bool _isLoading = false;
   @override
   bool get isLoading => _isLoading;
@@ -40,6 +42,16 @@ class HomeModelImpl extends HomeModel {
   }
 
   @override
+  void dispose() {
+    _isDisposed = true;
+
+    _isLoading = false;
+    _isFavoriteCryptoRequested = false;
+    
+    super.dispose();
+  }
+
+  @override
   void getFavoriteCryptoPresentations() {
     if (_isFavoriteCryptoRequested) return;
 
@@ -60,5 +72,12 @@ class HomeModelImpl extends HomeModel {
     _isLoading = isLoading;
 
     notifyListeners();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_isDisposed) return;
+    
+    super.notifyListeners();
   }
 }

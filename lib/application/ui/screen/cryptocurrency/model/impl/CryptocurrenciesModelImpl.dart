@@ -10,6 +10,8 @@ import 'package:rxdart/rxdart.dart';
 class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
   static const TAG = 'CMI';
 
+  bool _isDisposed = false;
+
   int _chunkIndex = 1;
   int get chunkIndex => _chunkIndex;
 
@@ -51,6 +53,19 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
       .listen((data) => _cryptoPresentationStreamController.add(data));
 
     _cryptoPresentationStream = _cryptoPresentationStreamController.stream.asBroadcastStream();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+
+    _chunkIndex = 1;
+    _isGettingChunk = false;
+    _isCryptoRequested = false;
+    _isLoading = false;
+    _lastChunkSize = 0;
+    
+    super.dispose();
   }
 
   @override
@@ -106,5 +121,12 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
     _isLoading = isLoading;
 
     notifyListeners();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_isDisposed) return;
+    
+    super.notifyListeners();
   }
 }

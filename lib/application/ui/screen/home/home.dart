@@ -9,16 +9,28 @@ import '../_common/screen.dart';
 import './component/list/FavoriteList.dart';
 import './component/TopHint.dart';
 
-class Home extends StatelessWidget implements Screen {
+class Home extends StatefulWidget implements Screen {
   static const NAME = "Your crypto";
   static const PATH = "/";
 
+  Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final GlobalKey _topHintKey = GlobalKey();
   final GlobalKey _homeContentState = GlobalKey();
 
+  HomeModel? _model;
   HomeContent? _homeContent;
 
-  Home({super.key});
+  @override
+  void dispose() {
+    _model?.dispose();
+    super.dispose();
+  }
 
   void toggleAppearance() {
     final state = _homeContentState.currentState;
@@ -33,29 +45,33 @@ class Home extends StatelessWidget implements Screen {
     _homeContent = HomeContent(key: _homeContentState, topHintKey: _topHintKey);
 
     return Consumer<HomeModel>(
-      builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          title: const Text(Home.NAME),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () => toggleAppearance(),
-              icon: const Icon(Icons.info)
-            )
-          ],
-          bottom: model.isLoading ? const PreferredSize(
-            preferredSize: Size.fromHeight(6),
-            child: LinearProgressIndicator()
-          ) : null,
-        ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: 0,
-          destinations: navigationBarDestinations,
-          onDestinationSelected: (index) {
-            context.go(routes[index].path);
-          },
-        ),
-        body: _homeContent!
-      )
+      builder: (context, model, child) {
+        _model = model;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(Home.NAME),
+            actions: <Widget>[
+              IconButton(
+                onPressed: () => toggleAppearance(),
+                icon: const Icon(Icons.info)
+              )
+            ],
+            bottom: model.isLoading ? const PreferredSize(
+              preferredSize: Size.fromHeight(6),
+              child: LinearProgressIndicator()
+            ) : null,
+          ),
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: 0,
+            destinations: navigationBarDestinations,
+            onDestinationSelected: (index) {
+              context.go(routes[index].path);
+            },
+          ),
+          body: _homeContent!
+        );
+      }
     );
   }
 }
