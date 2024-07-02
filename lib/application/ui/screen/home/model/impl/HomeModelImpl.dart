@@ -10,7 +10,15 @@ import 'package:rxdart/rxdart.dart';
 class HomeModelImpl extends HomeModel {
   static const TAG = 'HMI';
 
+  bool _isLoading = false;
+  @override
+  bool get isLoading => _isLoading;
+
+  bool _isFavoriteCryptoRequested = false;
+
   late Stream<List<CryptoPresentation>> _favoriteCryptoPresentationStream;
+  @override
+  Stream<List<CryptoPresentation>> get favoriteCryptoPresentationStream => _favoriteCryptoPresentationStream;
 
   final BehaviorSubject<List<CryptoPresentation>> _favoriteCryptoPresentationStreamController = 
     BehaviorSubject();
@@ -21,17 +29,24 @@ class HomeModelImpl extends HomeModel {
     super.cryptoRepository = cryptoRepository;
 
     _favoriteCryptoPresentationStreamSubscription = cryptoRepository.favoriteDataCryptoStream
-      .map((items) => items.map((item) => CryptoPresentation.fromDataCrypto(item)).toList())
+      .map((items) { 
+        if (_isLoading) _changeLoadingState(false);
+
+        return items.map((item) => CryptoPresentation.fromDataCrypto(item)).toList();
+      })
       .listen((data) => _favoriteCryptoPresentationStreamController.add(data));
 
     _favoriteCryptoPresentationStream = _favoriteCryptoPresentationStreamController.stream.asBroadcastStream();
   }
 
   @override
-  Stream<List<CryptoPresentation>> getFavoriteCryptoPresentations() {
-    cryptoRepository.loadFavorites();
+  void getFavoriteCryptoPresentations() {
+    if (_isFavoriteCryptoRequested) return;
 
-    return _favoriteCryptoPresentationStream;
+    _isFavoriteCryptoRequested = true;
+
+    _changeLoadingState(true);
+    cryptoRepository.loadFavorites();
   }
 
   @override
@@ -39,5 +54,11 @@ class HomeModelImpl extends HomeModel {
     print("$TAG: removeFromFavorites(): entering");
 
     cryptoRepository.removeFromFavorites(crypto.token);
+  }
+
+  void _changeLoadingState(bool isLoading) {
+    _isLoading = isLoading;
+
+    notifyListeners();
   }
 }

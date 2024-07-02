@@ -5,7 +5,10 @@ import '../../../../_common/presentation/CryptoPresentation.dart';
 
 abstract class HomeModel extends ChangeNotifier {
   late final CryptoRepository cryptoRepository;
+  bool get isLoading;
 
-  Stream<List<CryptoPresentation>> getFavoriteCryptoPresentations();
+  Stream<List<CryptoPresentation>> get favoriteCryptoPresentationStream;
+
+  void getFavoriteCryptoPresentations();
   void removeFromFavorites(CryptoPresentation crypto);
 }

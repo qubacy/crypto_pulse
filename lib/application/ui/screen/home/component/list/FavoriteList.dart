@@ -21,8 +21,10 @@ class FavoriteList extends StatelessWidget {
       builder: (context, model, child) {
         _model = model; 
 
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) => model.getFavoriteCryptoPresentations());
+
         return StreamBuilder(
-          stream: model.getFavoriteCryptoPresentations(),
+          stream: model.favoriteCryptoPresentationStream,
           builder: (context, listSnapshot) {
             final lastItems = listSnapshot.data ?? [];
 

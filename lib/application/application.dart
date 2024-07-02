@@ -8,7 +8,7 @@ import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-final _routes = [
+final routes = [
   GoRoute(
     path: Home.PATH,
     name: Home.NAME,
@@ -22,52 +22,53 @@ final _routes = [
 ];
 
 final _router = GoRouter(
-  routes: [
-    ShellRoute(
-      builder: (context, state, child) {
-        final bottomNavigationBar = _buildNavigationBar(context, state.fullPath);
+  routes: routes
+  // routes: [
+  //   ShellRoute(
+  //     builder: (context, state, child) {
+  //       final bottomNavigationBar = _buildNavigationBar(context, state.fullPath);
 
-        return Scaffold(
-          //appBar: _buildAppBar(bottomNavigationBar.selectedIndex, child),
-          bottomNavigationBar: bottomNavigationBar,
-          body: child
-        );
-      },
-      routes: _routes
-    )
-  ]
+  //       return Scaffold(
+  //         //appBar: _buildAppBar(bottomNavigationBar.selectedIndex, child),
+  //         bottomNavigationBar: bottomNavigationBar,
+  //         body: child
+  //       );
+  //     },
+  //     routes: _routes
+  //   )
+  // ]
 );
 
 final navigationBarDestinations = <NavigationDestination>[
   NavigationDestination(
     icon: const Icon(Icons.home),
-    label: _routes[0].name!
+    label: routes[0].name!
   ),
   NavigationDestination(
     icon: const SvgIcon(icon: SvgIconData('assets/images/crypto.svg')),
-    label: _routes[1].name!
+    label: routes[1].name!
   ),
 ];
 
-NavigationBar _buildNavigationBar(BuildContext context, String? routePath) {
-  return NavigationBar(
-    selectedIndex: _getNavigationBarDestinationIndexByRoutePath(routePath),
-    destinations: navigationBarDestinations,
-    onDestinationSelected: (index) {
-      context.go(_routes[index].path);
-    },
-  );
-}
+// NavigationBar _buildNavigationBar(BuildContext context, String? routePath) {
+//   return NavigationBar(
+//     selectedIndex: _getNavigationBarDestinationIndexByRoutePath(routePath),
+//     destinations: navigationBarDestinations,
+//     onDestinationSelected: (index) {
+//       context.go(_routes[index].path);
+//     },
+//   );
+// }
 
-int _getNavigationBarDestinationIndexByRoutePath(String? path) {
-  print("_getNavigationBarDestinationIndexByRoutePath(): name = $path");
+// int _getNavigationBarDestinationIndexByRoutePath(String? path) {
+//   print("_getNavigationBarDestinationIndexByRoutePath(): name = $path");
 
-  return switch (path) {
-    Home.PATH => 0,
-    Cryptocurrencies.PATH => 1,
-    _ => throw Exception()
-  };
-}
+//   return switch (path) {
+//     Home.PATH => 0,
+//     Cryptocurrencies.PATH => 1,
+//     _ => throw Exception()
+//   };
+// }
 
 class Application extends StatelessWidget {
   const Application({super.key});

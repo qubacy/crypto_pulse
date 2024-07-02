@@ -7,8 +7,11 @@ abstract class CryptocurrenciesModel extends ChangeNotifier {
   static const int CHUNK_SIZE = 20;
 
   late final CryptoRepository cryptoRepository;
+  bool get isLoading;
 
-  Stream<List<CryptoPresentation>> getAllCryptoPresentations();
+  Stream<List<CryptoPresentation>> get cryptoPresentationStream;
+
+  void getAllCryptoPresentations();
   void toggleFavoriteCrypto(CryptoPresentation crypto);
   void getNextChunk();
 }

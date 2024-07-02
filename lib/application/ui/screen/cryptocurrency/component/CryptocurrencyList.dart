@@ -22,8 +22,10 @@ class CryptocurrencyList extends StatelessWidget implements CryptocurrencyListIt
       builder: (context, model, child) {
         _model = model; 
 
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) => model.getAllCryptoPresentations());
+
         return StreamBuilder(
-          stream: model.getAllCryptoPresentations(),
+          stream: model.cryptoPresentationStream,
           builder: (context, listSnapshot) {
             final lastItems = listSnapshot.data ?? [];
 

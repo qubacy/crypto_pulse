@@ -1,5 +1,9 @@
 
+import 'package:crypto_pulse/application/application.dart';
+import 'package:crypto_pulse/application/ui/screen/home/model/_common/HomeModel.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../_common/screen.dart';
 import './component/list/FavoriteList.dart';
@@ -10,21 +14,54 @@ class Home extends StatelessWidget implements Screen {
   static const PATH = "/";
 
   final GlobalKey _topHintKey = GlobalKey();
+  final GlobalKey _homeContentState = GlobalKey();
+
   HomeContent? _homeContent;
 
   Home({super.key});
 
+  void toggleAppearance() {
+    final state = _homeContentState.currentState;
+
+    if (state == null) return;
+
+    (state as _HomeContentState).toggleAppearance();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _homeContent = HomeContent(topHintKey: _topHintKey,);
+    _homeContent = HomeContent(key: _homeContentState, topHintKey: _topHintKey);
 
-    return _homeContent!;
+    return Consumer<HomeModel>(
+      builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          title: const Text(Home.NAME),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () => toggleAppearance(),
+              icon: const Icon(Icons.info)
+            )
+          ],
+          bottom: model.isLoading ? const PreferredSize(
+            preferredSize: Size.fromHeight(6),
+            child: LinearProgressIndicator()
+          ) : null,
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: 0,
+          destinations: navigationBarDestinations,
+          onDestinationSelected: (index) {
+            context.go(routes[index].path);
+          },
+        ),
+        body: _homeContent!
+      )
+    );
   }
 }
 
 class HomeContent extends StatefulWidget {
   final GlobalKey? _topHintKey;
-  _HomeContentState? lastState;
 
   HomeContent({super.key, GlobalKey? topHintKey}) : 
     _topHintKey = topHintKey;
@@ -44,24 +81,6 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
   _HomeContentState({GlobalKey? topHintKey}) : _topHintKey = topHintKey;
 
   @override
-  void initState() {
-    super.initState();
-
-    print("initState;");
-
-    (widget as HomeContent).lastState = this;
-  }
-
-  @override
-  void didUpdateWidget(covariant StatefulWidget oldWidget) {
-    super.didUpdateWidget(oldWidget as HomeContent);
-
-    print("didUpdateWidget;");
-
-    (widget as HomeContent).lastState = this;
-  }
-
-  @override
   Widget build(BuildContext context) {
     EdgeInsets commonMargin = const EdgeInsets.only(left: 16, right: 16);
     final topHint = TopHint(
@@ -73,15 +92,6 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppBar(
-          title: const Text(Home.NAME),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () => toggleAppearance(),
-              icon: const Icon(Icons.info)
-            )
-          ]
-        ),
         AnimatedContainer(
           duration: ANIMATION_DURATION,
           height: _curTopHintHeight,

@@ -16,9 +16,17 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
   bool _isGettingChunk = false;
   bool get isGettingChunk => _isGettingChunk;
 
+  bool _isCryptoRequested = false;
+
+  bool _isLoading = false;
+  @override
+  bool get isLoading => _isLoading;
+
   int _lastChunkSize = 0;
 
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
+  @override
+  Stream<List<CryptoPresentation>> get cryptoPresentationStream => _cryptoPresentationStream;
 
   final BehaviorSubject<List<CryptoPresentation>> _cryptoPresentationStreamController = 
     BehaviorSubject();
@@ -33,6 +41,7 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
     _cryptoPresentationStreamSubscription = cryptoRepository.dataCryptoStream
       .map((items) {
         if (_isGettingChunk) _isGettingChunk = false;
+        if (_isLoading) _changeLoadingState(false);
 
         _lastChunkSize = items.length;
         _lastCryptoPresentationList = items.map((item) => CryptoPresentation.fromDataCrypto(item)).toList();
@@ -45,15 +54,20 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
   }
 
   @override
-  Stream<List<CryptoPresentation>> getAllCryptoPresentations() {
-    cryptoRepository.loadCryptocurrencies(_chunkIndex * CryptocurrenciesModel.CHUNK_SIZE);
+  void getAllCryptoPresentations() {
+    if (_isCryptoRequested) return;
 
-    return _cryptoPresentationStream;
+    _isCryptoRequested = true;
+
+    _changeLoadingState(true);
+    cryptoRepository.loadCryptocurrencies(_chunkIndex * CryptocurrenciesModel.CHUNK_SIZE);
   }
 
   @override
   void getNextChunk() {
     if (_isGettingChunk || _lastChunkSize % CryptocurrenciesModel.CHUNK_SIZE != 0) return;
+
+    _changeLoadingState(true);
 
     _isGettingChunk = true;
     ++_chunkIndex;
@@ -86,5 +100,11 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
     }
 
     _cryptoPresentationStreamController.add(lastCryptoPresentationList);
+  }
+
+  void _changeLoadingState(bool isLoading) {
+    _isLoading = isLoading;
+
+    notifyListeners();
   }
 }
