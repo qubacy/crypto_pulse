@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    _model?.dispose();
+    _model?.clear();
     super.dispose();
   }
 

@@ -56,15 +56,19 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
   }
 
   @override
-  void dispose() {
-    _isDisposed = true;
-
+  void clear() {
     _chunkIndex = 1;
     _isGettingChunk = false;
     _isCryptoRequested = false;
     _isLoading = false;
     _lastChunkSize = 0;
-    
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+
+    clear();
     super.dispose();
   }
 

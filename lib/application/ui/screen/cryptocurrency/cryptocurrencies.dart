@@ -21,7 +21,7 @@ class _CryptocurrenciesState extends State<Cryptocurrencies> {
 
   @override
   void dispose() {
-    _model?.dispose();
+    _model?.clear();
     super.dispose();
   }
 

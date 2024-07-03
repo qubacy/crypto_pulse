@@ -9,6 +9,7 @@ abstract class HomeModel extends ChangeNotifier {
 
   Stream<List<CryptoPresentation>> get favoriteCryptoPresentationStream;
 
+  void clear();
   void getFavoriteCryptoPresentations();
   void removeFromFavorites(CryptoPresentation crypto);
 }

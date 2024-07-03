@@ -11,6 +11,7 @@ abstract class CryptocurrenciesModel extends ChangeNotifier {
 
   Stream<List<CryptoPresentation>> get cryptoPresentationStream;
 
+  void clear();
   void getAllCryptoPresentations();
   void toggleFavoriteCrypto(CryptoPresentation crypto);
   void getNextChunk();

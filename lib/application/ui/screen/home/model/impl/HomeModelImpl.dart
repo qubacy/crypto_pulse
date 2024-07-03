@@ -42,12 +42,16 @@ class HomeModelImpl extends HomeModel {
   }
 
   @override
-  void dispose() {
-    _isDisposed = true;
-
+  void clear() {
     _isLoading = false;
     _isFavoriteCryptoRequested = false;
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
     
+    clear();
     super.dispose();
   }
 
