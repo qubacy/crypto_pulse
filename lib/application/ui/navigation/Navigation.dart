@@ -4,16 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 import 'package:go_router/go_router.dart';
 
+CustomTransitionPage getRoutePageBuilder(
+  GoRouterState state,
+  Widget child 
+) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position:
+          Tween(
+            begin: const Offset(1, 0),
+            end: Offset.zero
+          ).animate(animation),
+        child: child);
+    },
+  );
+}
+
 final routes = [
   GoRoute(
     path: Home.PATH,
     name: Home.NAME,
-    builder: (context, state) => Home(),
+    pageBuilder: (context, state) {
+      return getRoutePageBuilder(state, Home());
+    },
   ),
   GoRoute(
     path: Cryptocurrencies.PATH,
     name: Cryptocurrencies.NAME,
-    builder: (context, state) => const Cryptocurrencies()
+    pageBuilder: (context, state) {
+      return getRoutePageBuilder(state, const Cryptocurrencies());
+    }
   )
 ];
 
