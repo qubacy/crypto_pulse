@@ -1,4 +1,4 @@
-import 'package:crypto_pulse/application/application.dart';
+import 'package:crypto_pulse/application/ui/navigation/Navigation.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/component/CryptocurrencyList.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/model/_common/CryptocurrenciesModel.dart';
 import 'package:flutter/material.dart';

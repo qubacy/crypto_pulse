@@ -1,5 +1,5 @@
 
-import 'package:crypto_pulse/application/application.dart';
+import 'package:crypto_pulse/application/ui/navigation/Navigation.dart';
 import 'package:crypto_pulse/application/ui/screen/home/model/_common/HomeModel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
