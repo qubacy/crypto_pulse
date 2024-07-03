@@ -1,4 +1,3 @@
-
 import 'package:crypto_pulse/application/ui/navigation/Navigation.dart';
 import 'package:crypto_pulse/application/ui/screen/home/model/_common/HomeModel.dart';
 import 'package:flutter/material.dart';

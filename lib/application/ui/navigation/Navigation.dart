@@ -1,4 +1,3 @@
-import 'package:crypto_pulse/application/application.dart';
 import 'package:crypto_pulse/application/ui/screen/cryptocurrency/Cryptocurrencies.dart';
 import 'package:crypto_pulse/application/ui/screen/home/home.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +9,20 @@ CustomTransitionPage getRoutePageBuilder(
   GoRouterState state,
   Widget child 
 ) {
+  // NOTE: it's not easy to provide page sliding animation including BOTH prev. and cur. ones;
+  //       there's a way using Navigator instead of go_router to provide an exit animation OR to
+  //       get the prev. destination here; so let's just keep it simple for now;
+
   return CustomTransitionPage(
     key: state.pageKey,
     child: child,
-    transitionDuration: Duration(seconds: 1),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      final currentName = navigatorContext != null ? ModalRoute.of(navigatorContext!)?.settings.name ?? pagePath : pagePath;
-      
-      print('getRoutePageBuilder(): pagePath = $pagePath; currentName = $currentName;');
-      
-      if (pagePath == currentName)
-        animation.addListener(() => print('pageKey: $pagePath; animation.value = ${animation.value};'));
-      else
-        secondaryAnimation.addListener(() => print('pageKey: $pagePath; secondaryAnimation.value = ${secondaryAnimation.value};'));
-
       return SlideTransition(
         position:
           Tween(
             begin: const Offset(1, 0),
             end: Offset.zero
-          ).animate(pagePath == currentName ? animation : secondaryAnimation),
+          ).animate(animation),
         child: child
       );
     },
