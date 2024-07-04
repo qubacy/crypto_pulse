@@ -10,21 +10,29 @@ import 'package:rxdart/rxdart.dart';
 class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
   static const TAG = 'CMI';
 
+  static const DEFAULT_CHUNK_INDEX = 1;
+  static const DEFAULT_IS_GETTING_CHUNK = false;
+  static const DEFAULT_IS_CRYPTO_REQUESTED = false;
+  static const DEFAULT_IS_LOADING = false;
+  static const DEFAULT_LAST_CHUNK_SIZE = 0;
+
   bool _isDisposed = false;
 
-  int _chunkIndex = 1;
+  int _chunkIndex = DEFAULT_CHUNK_INDEX;
   int get chunkIndex => _chunkIndex;
 
-  bool _isGettingChunk = false;
+  bool _isGettingChunk = DEFAULT_IS_GETTING_CHUNK;
   bool get isGettingChunk => _isGettingChunk;
 
-  bool _isCryptoRequested = false;
+  bool _isCryptoRequested = DEFAULT_IS_CRYPTO_REQUESTED;
+  bool get isCryptoRequested => _isCryptoRequested;
 
-  bool _isLoading = false;
+  bool _isLoading = DEFAULT_IS_LOADING;
   @override
   bool get isLoading => _isLoading;
 
-  int _lastChunkSize = 0;
+  int _lastChunkSize = DEFAULT_LAST_CHUNK_SIZE;
+  int get lastChunkSize => _lastChunkSize;
 
   late Stream<List<CryptoPresentation>> _cryptoPresentationStream;
   @override
@@ -36,6 +44,7 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
   late StreamSubscription _cryptoPresentationStreamSubscription;
 
   List<CryptoPresentation> _lastCryptoPresentationList = [];
+  List<CryptoPresentation> get lastCryptoPresentationList => _lastCryptoPresentationList;
 
   CryptocurrenciesModelImpl(CryptoRepository cryptoRepository) {
     super.cryptoRepository = cryptoRepository;
@@ -57,11 +66,11 @@ class CryptocurrenciesModelImpl extends CryptocurrenciesModel {
 
   @override
   void clear() {
-    _chunkIndex = 1;
-    _isGettingChunk = false;
-    _isCryptoRequested = false;
-    _isLoading = false;
-    _lastChunkSize = 0;
+    _chunkIndex = DEFAULT_CHUNK_INDEX;
+    _isGettingChunk = DEFAULT_IS_GETTING_CHUNK;
+    _isCryptoRequested = DEFAULT_IS_CRYPTO_REQUESTED;
+    _isLoading = DEFAULT_IS_LOADING;
+    _lastChunkSize = DEFAULT_LAST_CHUNK_SIZE;
   }
 
   @override
