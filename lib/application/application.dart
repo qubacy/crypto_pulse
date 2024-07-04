@@ -11,6 +11,8 @@ final _router = GoRouter(
 );
 
 class Application extends StatelessWidget {
+  static const Test = '';
+
   const Application({super.key});
 
   @override
@@ -24,7 +26,7 @@ class Application extends StatelessWidget {
         routerConfig: _router,
         title: 'Crypto Pulse',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x006974)),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xEEB82F)),
           useMaterial3: true,
         ),
       )
