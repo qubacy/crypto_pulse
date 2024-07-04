@@ -45,10 +45,12 @@ class CryptoPresentation {
   }
 
   factory CryptoPresentation.fromDataCrypto(DataCrypto dataCrypto) {
+    final pricePrecision = getFractionDigitCountByValue(dataCrypto.price);
+
     return CryptoPresentation(
       token: dataCrypto.token, 
       name: dataCrypto.name, 
-      price: "\$${dataCrypto.price}",
+      price: "\$${dataCrypto.price.toStringAsFixed(pricePrecision)}",
       capitalization: dataCrypto.capitalization,
       isFavorite: dataCrypto.isFavorite
     );
@@ -56,4 +58,21 @@ class CryptoPresentation {
 
   @override
   int get hashCode => Object.hash(token, name, price, capitalization, isFavorite);
+
+  static int getFractionDigitCountByValue(double value) {
+    if (value <= 0) return 0;
+
+    const int valuableDigitNumber = 3;
+
+    int fractionMultiplier = 10;
+    int fractionMultiplierIterationCount = 0;
+
+    while (fractionMultiplier * value < 1) {
+      fractionMultiplier *= 10;
+
+      ++fractionMultiplierIterationCount;
+    }
+
+    return fractionMultiplierIterationCount + valuableDigitNumber;
+  }
 }
