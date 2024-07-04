@@ -10,13 +10,17 @@ import 'package:rxdart/rxdart.dart';
 class HomeModelImpl extends HomeModel {
   static const TAG = 'HMI';
 
+  static const DEFAULT_IS_LOADING = false;
+  static const DEFAULT_IS_FAVORITE_CRYPTO_REQUESTED = false;
+
   bool _isDisposed = false;
 
-  bool _isLoading = false;
+  bool _isLoading = DEFAULT_IS_LOADING;
   @override
   bool get isLoading => _isLoading;
 
-  bool _isFavoriteCryptoRequested = false;
+  bool _isFavoriteCryptoRequested = DEFAULT_IS_FAVORITE_CRYPTO_REQUESTED;
+  bool get isFavoriteCryptoRequested => _isFavoriteCryptoRequested;
 
   late Stream<List<CryptoPresentation>> _favoriteCryptoPresentationStream;
   @override
@@ -43,8 +47,8 @@ class HomeModelImpl extends HomeModel {
 
   @override
   void clear() {
-    _isLoading = false;
-    _isFavoriteCryptoRequested = false;
+    _isLoading = DEFAULT_IS_LOADING;
+    _isFavoriteCryptoRequested = DEFAULT_IS_FAVORITE_CRYPTO_REQUESTED;
   }
 
   @override
