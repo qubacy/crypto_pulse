@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/CryptoRepository.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/model/DataCrypto.dart';
 import 'package:crypto_pulse/application/ui/_common/presentation/CryptoPresentation.dart';
+import 'package:crypto_pulse/application/ui/model/_common/AppModel.dart';
 import 'package:crypto_pulse/application/ui/model/impl/AppModelImpl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -90,7 +91,7 @@ void main() {
 
     test('getNextChunk() test', () {
       const int expectedChunkCount = 1;
-      const int expectedCount = AppModelImpl.CHUNK_SIZE * 1;
+      const int expectedCount = AppModel.CHUNK_SIZE * 1;
       late int gottenCount;
 
       final MockCryptoRepository cryptoRepositoryMock = MockCryptoRepository();

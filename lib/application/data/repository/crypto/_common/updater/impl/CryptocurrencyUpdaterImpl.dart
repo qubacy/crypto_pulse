@@ -3,7 +3,7 @@ import 'dart:isolate';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/RemoteCryptoHttpRestDataSource.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/model/RemoteHttpRestCrypto.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/CryptocurrencyUpdater.dart';
-import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_di/CryptocurrencyUpdaterGraph.dart';
+import 'package:crypto_pulse/application/data/repository/crypto/_common/updater/_common/_di/initializer/CryptocurrencyUpdaterGraphInitializer.dart';
 import 'package:crypto_pulse/application/data/repository/token/_common/source/local/environment/_common/LocalTokenEnvironmentDataSource.dart';
 import 'package:crypto_pulse/di/di.dart';
 import 'package:injectable/injectable.dart';
@@ -24,11 +24,13 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
 
   final LocalTokenEnvironmentDataSource localTokenEnvironmentDataSource;
   final HttpContext httpContext;
+  final CryptocurrencyUpdaterGraphInitializer cryptocurrencyUpdaterGraphInitializer;
 
   CryptocurrencyUpdaterImpl({
     required this.remoteCryptoHttpRestDataSource,
     required this.localTokenEnvironmentDataSource,
-    required this.httpContext
+    required this.httpContext,
+    required this.cryptocurrencyUpdaterGraphInitializer
   });
 
   ReceivePort? _receivePort;
@@ -52,7 +54,7 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
     final token = await localTokenEnvironmentDataSource.loadToken();
 
     ReceivePort receivePort = ReceivePort();
-    List args = [receivePort.sendPort, baseUri, token];
+    List args = [receivePort.sendPort, baseUri, token, cryptocurrencyUpdaterGraphInitializer];
 
     _isolate = await Isolate.spawn(_update, args);
 
@@ -84,7 +86,9 @@ class CryptocurrencyUpdaterImpl extends CryptocurrencyUpdater {
   }
   
   static void _update(List args) async {
-    await configureCryptocurrencyUpdaterDependecies(args[1], args[2]);
+    CryptocurrencyUpdaterGraphInitializer cryptocurrencyUpdaterGraphInitializer = args[3];
+
+    await cryptocurrencyUpdaterGraphInitializer.initGraph([args[1], args[2]]);
 
     SendPort sendPort = args[0];
     ReceivePort receivePort = ReceivePort();

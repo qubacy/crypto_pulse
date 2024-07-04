@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:crypto_pulse/application/data/repository/_common/source/http/context/_common/HttpContext.dart';
-import 'package:crypto_pulse/application/data/repository/_common/source/http/header/interceptor/_common/HttpHeaderInterceptor.dart';
+import 'package:crypto_pulse/application/data/repository/_common/source/http/header/interceptor/authorization/_common/AuthorizationHttpHeaderInterceptor.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/api/_common/response/body/CryptocurrencyResponseData.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/api/_common/response/body/GetCryptocurrenciesResponse.dart';
 import 'package:crypto_pulse/application/data/repository/crypto/_common/source/http/rest/_common/api/impl/RemoteCryptoHttpRestDataSourceApiImpl.dart';
@@ -12,7 +12,7 @@ import 'package:mockito/mockito.dart';
 
 import 'RemoteCryptoHttpRestDataSourceApiImplTest.mocks.dart';
 
-@GenerateMocks([HttpContext, HttpHeaderInterceptor, Client, Response])
+@GenerateMocks([HttpContext, AuthorizationHttpHeaderInterceptor, Client, Response])
 void main() {
   group('Remote Crypto Http Rest Data Source Api Implementation tests', () {
     test('getCryptocurrencies() test', () async {
@@ -79,7 +79,7 @@ void main() {
 
       MockHttpContext httpContextMock = MockHttpContext();
 
-      when(httpContextMock.baseUri).thenReturn(baseUri);
+      when(httpContextMock.loadUri()).thenAnswer((_) async => baseUri);
 
       MockResponse httpResponseMock = MockResponse();
 
@@ -89,15 +89,16 @@ void main() {
 
       when(httpClientMock.get(any, headers: anyNamed("headers"))).thenAnswer((_) async => httpResponseMock);
 
-      MockHttpHeaderInterceptor httpHeaderInterceptorMock = MockHttpHeaderInterceptor();
+      MockAuthorizationHttpHeaderInterceptor authorizationHttpHeaderInterceptorMock = 
+        MockAuthorizationHttpHeaderInterceptor();
 
-      when(httpHeaderInterceptorMock.intercept(any)).thenAnswer((_) async => Void);
+      when(authorizationHttpHeaderInterceptorMock.intercept(any)).thenAnswer((_) async => Void);
 
       RemoteCryptoHttpRestDataSourceApiImpl remoteCryptoHttpRestDataSourceApiImpl = 
         RemoteCryptoHttpRestDataSourceApiImpl(
           httpClient: httpClientMock, 
           httpContext: httpContextMock, 
-          interceptors: [httpHeaderInterceptorMock]
+          authorizationHttpHeaderInterceptor: authorizationHttpHeaderInterceptorMock
         );
 
       final GetCryptocurrenciesResponse expectedGetCryptocurrenciesResponse = 
@@ -106,9 +107,8 @@ void main() {
       final GetCryptocurrenciesResponse gottenGetCryptocurrenciesResponse = 
         await remoteCryptoHttpRestDataSourceApiImpl.getCryptocurrencies(count);
 
-
-      verify(httpContextMock.baseUri);
-      verify(httpHeaderInterceptorMock.intercept(any));
+      verify(httpContextMock.loadUri());
+      verify(authorizationHttpHeaderInterceptorMock.intercept(any));
       verify(httpClientMock.get(any, headers: anyNamed("headers")));
       verify(httpResponseMock.body);
 

@@ -10,7 +10,7 @@ import 'HttpContextImplTest.mocks.dart';
 @GenerateMocks([DotEnv])
 void main() {
   group('Testing HttpContextImpl', () {
-    test('Correct Base Uri should be given', () {      
+    test('Correct Base Uri should be given', () async {      
       const expectedUri = 'test';
 
       const envMapMock = {HttpContext.BASE_URI_ENV_PROP_NAME: expectedUri};
@@ -21,7 +21,9 @@ void main() {
 
       final httpContext = HttpContextImpl(dotEnv: dotEnvMock);
 
-      expect(httpContext.baseUri, expectedUri);
+      final gottenUri = await httpContext.loadUri();
+
+      expect(gottenUri, expectedUri);
     });
   });
 }

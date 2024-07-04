@@ -9,7 +9,7 @@ import 'dart:typed_data' as _i9;
 
 import 'package:crypto_pulse/application/data/repository/_common/source/http/context/_common/HttpContext.dart'
     as _i4;
-import 'package:crypto_pulse/application/data/repository/_common/source/http/header/interceptor/_common/HttpHeaderInterceptor.dart'
+import 'package:crypto_pulse/application/data/repository/_common/source/http/header/interceptor/authorization/_common/AuthorizationHttpHeaderInterceptor.dart'
     as _i7;
 import 'package:flutter_dotenv/flutter_dotenv.dart' as _i2;
 import 'package:http/http.dart' as _i3;
@@ -102,12 +102,12 @@ class MockHttpContext extends _i1.Mock implements _i4.HttpContext {
       ) as _i5.Future<String>);
 }
 
-/// A class which mocks [HttpHeaderInterceptor].
+/// A class which mocks [AuthorizationHttpHeaderInterceptor].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockHttpHeaderInterceptor extends _i1.Mock
-    implements _i7.HttpHeaderInterceptor {
-  MockHttpHeaderInterceptor() {
+class MockAuthorizationHttpHeaderInterceptor extends _i1.Mock
+    implements _i7.AuthorizationHttpHeaderInterceptor {
+  MockAuthorizationHttpHeaderInterceptor() {
     _i1.throwOnMissingStub(this);
   }
 

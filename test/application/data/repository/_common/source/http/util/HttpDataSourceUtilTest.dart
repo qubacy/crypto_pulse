@@ -12,16 +12,16 @@ import 'HttpDataSourceUtilTest.mocks.dart';
 @GenerateMocks([HttpContext, HttpHeaderInterceptor])
 void main() {
   group('Http Data Source Util test', () {
-    test('getFullUri() method test', () {
+    test('getFullUri() method test', () async {
       const String baseUri = 'test.com';
       const String path = '/test';
       final MockHttpContext httpContextMock = MockHttpContext();
 
-      when(httpContextMock.baseUri).thenReturn(baseUri);
+      when(httpContextMock.loadUri()).thenAnswer((_) async => baseUri);
 
       final Uri expectedFullUri = Uri.parse(baseUri + path);
 
-      final Uri gottenFullUri = HttpDataSourceUtil.getFullUri(httpContextMock, path);
+      final Uri gottenFullUri = await HttpDataSourceUtil.getFullUri(httpContextMock, path);
 
       expect(gottenFullUri, expectedFullUri);
     });
