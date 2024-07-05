@@ -90,14 +90,17 @@ void main() {
       await tester.pumpWidget(widget);
 
       final infoButtonFinder = find.byIcon(Icons.info);
-      final initHintSize = tester.getSize(infoButtonFinder);
+      final hintFinder = find.byType(TopHint);
+      final initHintSize = tester.getSize(hintFinder);
 
       expect(initHintSize.height, greaterThan(0));
 
       await tester.tap(infoButtonFinder);
       await tester.pumpAndSettle(); // todo: not good;
 
-      expect(initHintSize.height, equals(0));
+      final finalHintSize = tester.getSize(hintFinder);
+
+      expect(finalHintSize.height, equals(0));
     });
 
     // TODO: should be modified in order to test an actual change:
