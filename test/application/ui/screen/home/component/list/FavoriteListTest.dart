@@ -42,11 +42,14 @@ void main() {
 
       final MockHomeModel homeModelMock = MockHomeModel();
 
-      when(homeModelMock.getFavoriteCryptoPresentations()).thenAnswer((_) => favoriteCryptoPresentationListStream);
+      when(homeModelMock.favoriteCryptoPresentationStream).thenAnswer((_) => favoriteCryptoPresentationListStream);
 
       Widget widgetToTest = buildWidget(homeModelMock);
 
       await tester.pumpWidget(widgetToTest);
+
+      verify(homeModelMock.favoriteCryptoPresentationStream);
+      verify(homeModelMock.getFavoriteCryptoPresentations());
 
       final listItemFinder = find.byType(FavoriteListItem);
 
@@ -82,7 +85,7 @@ void main() {
 
       final MockHomeModel homeModelMock = MockHomeModel();
 
-      when(homeModelMock.getFavoriteCryptoPresentations()).thenAnswer((_) => favoriteCryptoPresentationListStream);
+      when(homeModelMock.favoriteCryptoPresentationStream).thenAnswer((_) => favoriteCryptoPresentationListStream);
       when(homeModelMock.removeFromFavorites(any)).thenAnswer((invocation) {
         gottenCryptoPresentationToRemove = invocation.positionalArguments.first;
       });
@@ -91,6 +94,9 @@ void main() {
 
       await tester.pumpWidget(widgetToTest);
       await tester.pumpAndSettle();
+
+      verify(homeModelMock.favoriteCryptoPresentationStream);
+      verify(homeModelMock.getFavoriteCryptoPresentations());
 
       final listItemFinder = find.byType(FavoriteListItem);
 

@@ -40,12 +40,15 @@ void main() {
 
       final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
 
-      when(cryptocurrenciesModelMock.getAllCryptoPresentations())
+      when(cryptocurrenciesModelMock.cryptoPresentationStream)
         .thenAnswer((_) => cryptoPresentationListController.stream);
 
       final Widget widget = buildList(cryptocurrenciesModelMock);
 
       await tester.pumpWidget(widget);
+
+      verify(cryptocurrenciesModelMock.cryptoPresentationStream);
+      verify(cryptocurrenciesModelMock.getAllCryptoPresentations());
 
       final listItemFinder = find.byElementType(CryptocurrencyListItem);
 
@@ -87,7 +90,7 @@ void main() {
 
       final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
 
-      when(cryptocurrenciesModelMock.getAllCryptoPresentations()).thenAnswer((_) => getAllCryptoPresentationStream);
+      when(cryptocurrenciesModelMock.cryptoPresentationStream).thenAnswer((_) => getAllCryptoPresentationStream);
       when(cryptocurrenciesModelMock.toggleFavoriteCrypto(any))
         .thenAnswer((invocation) {
           gottenCryptoPresentationToToggleFavorite = invocation.positionalArguments.first;
@@ -96,10 +99,12 @@ void main() {
       final Widget widget = buildList(cryptocurrenciesModelMock);
 
       await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+
+      verify(cryptocurrenciesModelMock.cryptoPresentationStream);
+      verify(cryptocurrenciesModelMock.getAllCryptoPresentations());
 
       final itemListFinder = find.byType(CryptocurrencyListItem);
-
-      await tester.pumpAndSettle();
 
       expect(itemListFinder, findsExactly(cryptoPresentationList.length));
 
@@ -129,12 +134,15 @@ void main() {
 
       final MockCryptocurrenciesModel cryptocurrenciesModelMock = MockCryptocurrenciesModel();
 
-      when(cryptocurrenciesModelMock.getAllCryptoPresentations()).thenAnswer((_) => getAllCryptoPresentationStream);
+      when(cryptocurrenciesModelMock.cryptoPresentationStream).thenAnswer((_) => getAllCryptoPresentationStream);
 
       final Widget widget = buildList(cryptocurrenciesModelMock);
 
       await tester.pumpWidget(widget);
       await tester.pumpAndSettle();
+
+      verify(cryptocurrenciesModelMock.cryptoPresentationStream);
+      verify(cryptocurrenciesModelMock.getAllCryptoPresentations());
 
       final lastListItemNameFinder = find.text(cryptoPresentationList.last.name);
 
