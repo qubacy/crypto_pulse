@@ -130,7 +130,7 @@ class _HomeContentState extends State<HomeContent> with SingleTickerProviderStat
         if (_curTopHintHeight == null) {
           _curTopHintHeight = 0;
         } else {
-          _curTopHintHeight = _curTopHintHeight == _topHintHeight ? 0 : 40;
+          _curTopHintHeight = _curTopHintHeight == _topHintHeight ? 0 : 40; // todo: refactor!
         }
 
         print("toggleAppearance(): _curTopHintHeight = $_curTopHintHeight;");
