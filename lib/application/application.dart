@@ -10,10 +10,15 @@ final _router = GoRouter(
   routes: routes
 );
 
-class Application extends StatelessWidget {
-  static const Test = '';
-
+class Application extends StatefulWidget {
   const Application({super.key});
+
+  @override
+  State<Application> createState() => _ApplicationState();
+}
+
+class _ApplicationState extends State<Application> {
+  int _selectedDestinationIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,30 @@ class Application extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xEEB82F)),
           useMaterial3: true,
         ),
+        builder: (context, child) {
+          return Overlay(
+            initialEntries: [
+              OverlayEntry(
+                builder: (context) {
+                  return Scaffold(
+                    bottomNavigationBar: NavigationBar(
+                      selectedIndex: _selectedDestinationIndex,
+                      destinations: navigationBarDestinations,
+                      onDestinationSelected: (index) {
+                        setState(() {
+                          _selectedDestinationIndex = index;
+                        });
+
+                        _router.go(routes[index].path);
+                      },
+                    ),
+                    body: child,
+                  );
+                },
+              ),
+            ],
+          );
+        },
       )
     );
   }

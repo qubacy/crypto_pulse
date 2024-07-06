@@ -31,23 +31,21 @@ class _CryptocurrenciesState extends State<Cryptocurrencies> {
       builder: (context, model, child) {
         _model = model;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(Cryptocurrencies.NAME),
-            actions: [],
-            bottom: model.isLoading ? const PreferredSize(
-              preferredSize: Size.fromHeight(6),
-              child: LinearProgressIndicator()
-            ) : null,
-          ),
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: 1,
-            destinations: navigationBarDestinations,
-            onDestinationSelected: (index) {
-              context.go(routes[index].path);
-            },
-          ),
-          body: CryptocurrencyList()
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Column(
+            children: [
+              AppBar(
+                title: const Text(Cryptocurrencies.NAME),
+                actions: [],
+                bottom: model.isLoading ? const PreferredSize(
+                  preferredSize: Size.fromHeight(6),
+                  child: LinearProgressIndicator()
+                ) : null,
+              ),
+              Expanded(child: CryptocurrencyList())
+            ]
+          )
         );
       }
     );

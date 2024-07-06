@@ -47,28 +47,26 @@ class _HomeState extends State<Home> {
       builder: (context, model, child) {
         _model = model;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(Home.NAME),
-            actions: <Widget>[
-              IconButton(
-                onPressed: () => toggleAppearance(),
-                icon: const Icon(Icons.info)
-              )
-            ],
-            bottom: model.isLoading ? const PreferredSize(
-              preferredSize: Size.fromHeight(6),
-              child: LinearProgressIndicator()
-            ) : null,
-          ),
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: 0,
-            destinations: navigationBarDestinations,
-            onDestinationSelected: (index) {
-              context.go(routes[index].path);
-            },
-          ),
-          body: _homeContent!
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+            child: Column(
+              children: [
+                AppBar(
+                  title: const Text(Home.NAME),
+                  actions: <Widget>[
+                    IconButton(
+                      onPressed: () => toggleAppearance(),
+                      icon: const Icon(Icons.info)
+                    )
+                  ],
+                  bottom: model.isLoading ? const PreferredSize(
+                    preferredSize: Size.fromHeight(6),
+                    child: LinearProgressIndicator()
+                  ) : null,
+                ),
+                Expanded(child: _homeContent!)
+              ]
+            )
         );
       }
     );
